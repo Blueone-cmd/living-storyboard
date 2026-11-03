@@ -1,0 +1,26 @@
+/* Kael's approved left-hand axe portrait is used on the home stage only. */
+#cast-figures .cast-spot:nth-child(4) .cast-standalone { z-index: 0; }
+#cast-figures .cast-spot:nth-child(4) .cast-cloth-slice { z-index: 1; }
+#cast-figures .cast-kyle-glow {
+  position: absolute;
+  z-index: 3;
+  left: calc(50% + 28px);
+  top: 224px;
+  width: 101px;
+  height: 85px;
+  border-radius: 50%;
+  transform: translate(-50%, -50%) rotate(-25deg);
+  background: radial-gradient(ellipse, #a5e7ff55 0%, #348dff30 36%, transparent 73%);
+  filter: blur(9px);
+  mix-blend-mode: screen;
+  pointer-events: none;
+  animation: kyle-thunder-pulse 4.5s ease-in-out -1.2s infinite;
+}
+@keyframes kyle-thunder-pulse {
+  0%, 100% { opacity: .33; transform: translate(-50%, -50%) rotate(-25deg) scale(.88); }
+  45% { opacity: .9; transform: translate(-50%, -50%) rotate(-25deg) scale(1.16); }
+  76% { opacity: .46; transform: translate(-50%, -50%) rotate(-25deg) scale(.99); }
+}
+@media (prefers-reduced-motion: reduce) {
+  #cast-figures .cast-kyle-glow { animation: none; opacity: .45; }
+}

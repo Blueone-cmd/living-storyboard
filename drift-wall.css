@@ -1,0 +1,59 @@
+/* The frame archive uses the panel's native vertical scroll. */
+#panel[data-view="works"].is-drift-view #works-grid { display: none !important; }
+#panel[data-view="works"].is-drift-view .archive-toolbar { margin-top: 0; margin-bottom: 14px; }
+#panel[data-view="works"].is-drift-view .panel-body {
+  display: block;
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior-y: contain;
+  scroll-behavior: auto;
+}
+#panel[data-view="works"].is-drift-view #panel-works { display: block !important; min-height: 100%; }
+#panel[data-view="works"] .drift-wall[hidden] { display: none !important; }
+.drift-wall {
+  position: relative;
+  width: 100%;
+  border: 1px solid #45565e;
+  background: #071018;
+  box-shadow: 0 12px 38px #0006;
+}
+.drift-scene {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  align-items: start;
+  gap: 17px;
+  padding: 17px;
+}
+.drift-tile {
+  position: relative;
+  display: block;
+  width: 100%;
+  aspect-ratio: var(--still-aspect, 9 / 16);
+  min-width: 0;
+  padding: 0;
+  border: 1px solid #b0bbbd50;
+  border-radius: 4px;
+  overflow: hidden;
+  background: #162630;
+  box-shadow: 0 8px 17px #0007;
+  transform: scale(1);
+  transform-origin: center;
+  transition: transform .22s ease-out, border-color .22s ease-out, box-shadow .22s ease-out;
+}
+.drift-tile img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center;
+  opacity: 1;
+  filter: none;
+  pointer-events: none;
+}
+.drift-tile:hover {
+  z-index: 2;
+  transform: scale(1.035);
+  border-color: #e9b485;
+  box-shadow: 0 12px 24px #000b, 0 0 0 1px #e9b4858c;
+}
+@media (prefers-reduced-motion: reduce) { .drift-tile { transition: none; } }

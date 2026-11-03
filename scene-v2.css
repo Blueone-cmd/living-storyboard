@@ -1,0 +1,99 @@
+/* Fixed 1672 × 940 cinema canvas. Window resizing scales the complete scene. */
+body{background:radial-gradient(ellipse at center,#17252d 0%,#080d12 58%,#030609 100%)}
+.screen{position:fixed;left:50%;top:50%;width:1672px;height:940px;min-height:0;opacity:0;transform:translate(-50%,-50%) scale(var(--stage-scale,1));transform-origin:center center;transition:opacity .24s ease}
+.screen.stage-ready{opacity:1}
+.screen::before{inset:-2%;background:url("assets/environment-v2.webp") center/cover no-repeat;filter:brightness(.72) saturate(.84);opacity:1;transform:scale(1.025);animation:environment-drift 27s ease-in-out infinite alternate}
+.screen::after{background:linear-gradient(180deg,#02070d8f 0%,transparent 20%,transparent 49%,#03080c5c 70%,#0205098a 100%),linear-gradient(90deg,#03090e73,transparent 18%,transparent 82%,#03090e73)}
+@keyframes environment-drift{to{transform:scale(1.075) translate3d(-.8%,.45%,0)}}
+.smoke-a{width:920px;height:170px}.smoke-b{width:1036px;height:188px}
+@keyframes smoke-drift{to{transform:translateX(167px) scale(1.18)}}
+.topbar{height:60px;min-height:0;padding:0 57px;gap:20px}
+.brand-copy{display:block;font:700 9px/1.15 var(--sans)}
+.brand-monogram{font:700 34px/1 var(--serif)}
+.nav{position:absolute;left:50%;transform:translateX(-50%);flex:none;justify-content:center;gap:56px}.nav button{font:700 11px/1 var(--sans);letter-spacing:.18em;padding:9px 0}
+.sound-toggle{gap:10px}.sound-toggle #sound-label{display:inline}.sound-ring{width:38px;height:38px;font-size:17px;box-shadow:0 0 0 3px #ffffff22}
+.hero-composite{position:absolute;z-index:4;left:0;top:0;width:1672px;height:640px;overflow:hidden;pointer-events:none;background:url("assets/hero-composite-synced-poster.webp") center/cover no-repeat}
+.hero-composite video{display:block;width:100%;height:100%;object-fit:cover;opacity:0;transform:translate3d(var(--hero-pan-x,0px),var(--hero-pan-y,0px),0) scale(1.025);transform-origin:center center;filter:brightness(.99) saturate(1.13) contrast(1.15);transition:opacity .45s ease,transform .45s ease-out}
+.hero-composite.is-playing video{opacity:1}
+.hero-composite::before,.hero-composite::after{content:"";position:absolute;inset:0;pointer-events:none}
+.hero-composite::before{z-index:1;background:linear-gradient(180deg,#02070bc9 0%,transparent 15%,transparent 80%,#07101661 100%),radial-gradient(ellipse at 50% 84%,transparent 20%,#06111a24 100%)}
+.hero-composite::after{z-index:3;background:linear-gradient(180deg,transparent 89%,#0610172f 100%)}
+.hero-atmosphere{position:absolute;z-index:2;inset:0;pointer-events:none;background:radial-gradient(ellipse at 16% 37%,#a9d4fa13,transparent 38%),radial-gradient(ellipse at 86% 44%,#ffdfb013,transparent 38%);mix-blend-mode:screen;animation:hero-light-breathe 9s ease-in-out infinite alternate}
+@keyframes hero-light-breathe{to{opacity:.58;transform:scale(1.04) translateX(1%);filter:brightness(1.2)}}
+.title-block{top:270px;padding:0;left:0;right:0;z-index:32}.title-overline{font-size:11px;margin-bottom:5px}.title-block h1{max-width:none;white-space:nowrap;text-wrap:initial;font:700 135px/.95 var(--serif)}.title-byline{font-size:11px;margin-top:7px;letter-spacing:.45em}
+/* A small illuminated cinema control, set clear of the moving film below. */
+.enter-shot{position:relative;z-index:2;min-height:54px;margin-top:48px;padding:8px 22px;gap:14px;border:1px solid #edb583ad;border-radius:999px;background:linear-gradient(110deg,#081019dc 0%,#241d1be3 48%,#10151adf 100%);box-shadow:0 8px 23px #000d,0 0 0 4px #ed99521a,0 0 26px #ed995238,inset 0 1px 0 #ffe3bb63;backdrop-filter:blur(7px);font-size:14px;letter-spacing:.18em;color:#ffcf9e;text-shadow:0 1px 6px #000,0 0 12px #fc8c567d;filter:none;transition:transform .25s,background .25s,color .25s,box-shadow .25s;animation:enter-shot-beacon 4.5s ease-in-out infinite}
+.enter-shot::before{content:"";position:absolute;inset:4px;border:1px solid #ffe2b32c;border-radius:inherit;pointer-events:none}
+.enter-shot:hover,.enter-shot:focus-visible{gap:14px;color:#fff9e9;background:linear-gradient(110deg,#1a1514f0,#50301de8 48%,#1b1717ee);box-shadow:0 10px 27px #000e,0 0 0 4px #f7b47338,0 0 32px #ffad65a1,inset 0 1px 0 #fff2d28a;transform:translateY(-2px);animation:none}
+.enter-shot:focus-visible{outline:2px solid #ffe4bc;outline-offset:5px}
+.enter-line{width:45px;height:1px;background:linear-gradient(90deg,transparent 0%,#ed9864 60%,#ffe0aa 100%);box-shadow:0 0 7px #f69f67c9}
+.enter-arrow{width:36px;height:36px;flex:none;border:1px solid #ffd29c;background:radial-gradient(circle at 40% 35%,#ffb06973,#64301c8a 68%,#121012c7);box-shadow:0 0 0 3px #ed955a29,0 0 17px #fa9855a3,inset 0 0 10px #efa06c72;font-size:21px;line-height:1;transition:transform .25s,box-shadow .25s}
+.enter-shot:hover .enter-arrow,.enter-shot:focus-visible .enter-arrow{transform:translateX(3px) scale(1.07);box-shadow:0 0 0 4px #ed955a45,0 0 24px #fa9855da,inset 0 0 13px #efa06ca0}
+@keyframes enter-shot-beacon{50%{box-shadow:0 8px 23px #000d,0 0 0 4px #ed99522b,0 0 33px #ffac626b,inset 0 1px 0 #ffe3bb63}}
+.title-block h1,.title-block .title-overline,.title-block .title-byline{transition:opacity .23s ease}
+#screen.impact-beat .title-block h1{opacity:.16}
+#screen.impact-beat .title-block .title-overline,#screen.impact-beat .title-block .title-byline{opacity:.35}
+.impact-line{top:425px;left:55px;right:auto;justify-content:initial;gap:19px;padding:6px 13px 7px}.impact-heading{display:block}.impact-line strong{font-size:34px}.impact-line strong span{font-size:14px}.impact-line small{font-size:9px}.impact-separator{height:23px}
+
+/* A continuous curved film strip. Full-frame thumbnails match the concept;
+   opening a work still presents its original vertical 9:16 media. */
+.film-ribbon{left:-80px;right:-80px;top:552px;height:205px;z-index:25;transform:none;overflow:hidden;background:none;border:0;box-shadow:none;perspective:1500px}
+.film-ribbon::before,.film-ribbon::after{display:none}
+.ribbon-track{position:absolute;inset:0;display:block;width:100%;height:100%;padding:0;transform:none!important;animation:none!important;overflow:visible;touch-action:pan-y;cursor:grab}
+.ribbon-track.is-dragging{cursor:grabbing}
+.reel-item{position:absolute;left:0;top:0;display:block;flex:none;width:176px;height:159px;padding:8px 3px;border:1px solid #52606a;background:#080e12;color:#fff;overflow:visible;transform-origin:center;box-shadow:0 7px 17px #000c;will-change:transform;backface-visibility:hidden;touch-action:pan-y}
+.reel-item::before,.reel-item::after{content:"";position:absolute;left:0;right:0;height:7px;z-index:4;background:repeating-linear-gradient(90deg,#080d11 0 8px,#b7c8c7 8px 15px,#080d11 15px 22px);box-shadow:0 0 0 1px #080d11}
+.reel-item::before{top:0}.reel-item::after{bottom:0}
+.reel-visual{position:relative;display:block;width:100%;height:100%;overflow:hidden;background:#111d23}
+.reel-item .reel-frame-image{width:100%;height:100%;object-fit:cover;filter:brightness(.86) saturate(.9);animation:none!important;transition:filter .3s,transform .35s}
+.reel-item:hover .reel-frame-image,.reel-item:focus-visible .reel-frame-image{filter:brightness(1.12) saturate(1.06);transform:scale(1.055)}
+.reel-index{position:absolute;z-index:5;left:7px;bottom:9px;padding:3px 5px;background:#03080bbb;color:#fff;font:700 10px/1 var(--sans);letter-spacing:.13em}
+.reel-demo{position:absolute;z-index:5;top:9px;right:6px;color:#e7edef;background:#081015bd;padding:3px 4px;font:700 7px/1 var(--sans)}
+.film-ribbon::selection,.reel-item::selection{background:transparent}
+.reel-item.is-primary:focus-visible{outline:2px solid #ffba7f;outline-offset:2px}
+
+/* The ruined coast continues behind the picture windows. The original local
+   environment image is re-lit here, while canvas animates surf, fog and sparks. */
+.lower-world{position:absolute;z-index:5;left:0;right:0;top:639px;height:348px;overflow:hidden;pointer-events:none;isolation:isolate;-webkit-mask-image:linear-gradient(180deg,transparent 0%,#000 14%,#000 100%);mask-image:linear-gradient(180deg,transparent 0%,#000 14%,#000 100%)}
+.lower-world::before{content:"";position:absolute;z-index:-1;left:0;top:-639px;width:1672px;height:940px;background:url("assets/environment-v2.webp") center/1672px 940px no-repeat;filter:brightness(.86) saturate(.79) contrast(.82);opacity:.96;transform-origin:50% 74%;animation:lower-coast-drift 24s ease-in-out infinite alternate}
+.lower-world::after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(180deg,#02070b17,transparent 28%,#03070c13 63%,#02050773),radial-gradient(ellipse at 15% 35%,#69bde51c,transparent 33%),radial-gradient(ellipse at 89% 32%,#ffb87915,transparent 30%);mix-blend-mode:screen;animation:coast-light 8s ease-in-out infinite alternate}
+.lower-world canvas{display:block;width:100%;height:100%;opacity:.88;mix-blend-mode:screen}
+@keyframes lower-coast-drift{to{transform:scale(1.035) translate3d(-.4%,.15%,0);filter:brightness(.9) saturate(.82) contrast(.86)}}
+@keyframes coast-light{to{opacity:.64;filter:brightness(1.26)}}
+
+/* The seven numbered character cards form a single foreground ensemble. */
+.cast-layer{--cast-height:260px;left:0;right:0;bottom:0;height:260px;z-index:27;pointer-events:none}
+.cast-atmosphere{pointer-events:none}
+.cast-figures{position:absolute;inset:0;pointer-events:none}
+.cast-layer .cast-spot{position:absolute;left:var(--cast-x);bottom:var(--cast-bottom,0px);width:var(--cast-width);height:var(--cast-visible-height,260px);padding:0;border:0;background:none;overflow:visible;pointer-events:none;clip-path:none;z-index:1;transform:translateX(-50%);transform-origin:center bottom;transition:transform .38s cubic-bezier(.2,.75,.2,1),filter .38s}
+.cast-layer .cast-spot:hover,.cast-layer .cast-spot:focus-visible{z-index:8;transform:translateX(-50%) translateY(-7px) scale(1.055);filter:drop-shadow(0 0 12px #ffbc8166)}
+.cast-cut{position:absolute;inset:0;display:block;overflow:hidden}
+.cast-spot:nth-last-child(-n+2) .cast-cut{-webkit-mask-image:linear-gradient(90deg,transparent,#000 5%,#000 95%,transparent);mask-image:linear-gradient(90deg,transparent,#000 5%,#000 95%,transparent)}
+.cast-cut img{position:absolute;left:0;top:0;width:auto;max-width:none;height:var(--cast-source-height);transform:translateX(var(--cast-source-left));pointer-events:none}
+.cast-cut img{filter:brightness(.94) contrast(.92) saturate(.82)}
+.cast-hit{position:absolute;inset:0;z-index:2;pointer-events:auto;clip-path:polygon(28% 0,72% 0,83% 28%,96% 70%,92% 100%,8% 100%,4% 70%,17% 28%)}
+.cast-cut .cast-standalone{position:absolute;left:50%;top:0;width:auto;height:var(--cast-source-height);max-width:none;object-fit:contain;object-position:center top;transform:translateX(-50%);filter:drop-shadow(0 8px 10px #0009);pointer-events:none}
+.cast-standin{position:absolute;left:28%;right:28%;top:8%;bottom:0;background:linear-gradient(90deg,#0a1318,#566a6b 48%,#14232b);clip-path:polygon(32% 0,68% 0,76% 11%,68% 23%,90% 48%,100% 77%,76% 80%,68% 58%,64% 100%,35% 100%,32% 58%,24% 80%,0 78%,10% 48%,33% 23%,24% 11%);opacity:.65}
+.cast-layer .cast-name{position:absolute;left:50%;bottom:46px;transform:translate(-50%,8px);z-index:3;opacity:0;white-space:nowrap;pointer-events:none}
+.cast-layer .cast-spot:hover .cast-name,.cast-layer .cast-spot:focus-visible .cast-name{opacity:1;transform:translate(-50%,0)}
+.scene-footer{left:50px;right:50px;bottom:13px;font-size:9px}.scene-footer span:last-child{display:inline}
+.character-cards{grid-template-columns:repeat(var(--character-count,5),minmax(112px,1fr));overflow-x:auto}
+
+.title-block h1{font-size:86px}
+.title-byline{display:inline-flex;align-items:center;justify-content:center;gap:16px;min-height:27px;margin-top:11px;letter-spacing:0;white-space:nowrap}
+.title-byline::before,.title-byline::after{content:"";display:block;width:38px;height:1px;flex:none;background:linear-gradient(90deg,transparent,#e6a878a8)}
+.title-byline::after{transform:rotate(180deg)}
+.title-byline-role{font:700 11px/1.2 var(--sans);letter-spacing:.24em;color:#f1e8dc}
+.title-byline-divider{display:block;width:1px;height:18px;background:#efad78;transform:rotate(20deg);box-shadow:0 0 9px #ee955887}
+.title-byline-name{font:700 21px/1.1 "Songti SC","SimSun",serif;letter-spacing:.18em;color:#fffaf2}
+
+/* Keep full weapons, capes and the folio outside each character's narrow hit
+   zone; only the hit zone accepts pointers, so the film remains explorable. */
+.cast-layer .cast-cut{overflow:visible}
+.cast-layer .cast-spot:nth-last-child(-n+2) .cast-cut{-webkit-mask-image:none;mask-image:none}
+.cast-layer .cast-cut .cast-standalone{filter:brightness(.95) contrast(1.03) saturate(.9) drop-shadow(0 9px 13px #000e)}
+.cast-layer .cast-spot:nth-child(4) .cast-standalone{filter:brightness(1.01) contrast(1.05) saturate(.94) drop-shadow(0 10px 15px #000e)}
+.cast-layer .cast-spot::after{content:"";position:absolute;left:18%;right:18%;bottom:0;height:18px;border-radius:50%;background:#010609a8;filter:blur(11px);pointer-events:none;z-index:-1}
+.cast-layer .cast-spot:hover .cast-standalone,.cast-layer .cast-spot:focus-visible .cast-standalone{filter:brightness(1.04) contrast(1.05) saturate(1) drop-shadow(0 11px 16px #000f)}
+
+@media(prefers-reduced-motion:reduce){.screen{transition:none}.cast-layer .cast-spot{transition:none}.lower-world::before,.lower-world::after,.enter-shot{animation:none}}

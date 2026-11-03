@@ -1,0 +1,107 @@
+/* Editorial treatment for the director statement inside the fixed-size archive dialog. */
+#panel[data-view="about"] #panel-about .about-layout {
+  grid-template-columns: minmax(0, 1fr) 306px;
+  gap: 68px;
+  align-items: center;
+  min-height: 660px;
+}
+
+#panel-about .about-editorial {
+  min-width: 0;
+  padding: 3px 0 4px;
+}
+
+#panel-about .about-kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 10px;
+  letter-spacing: .23em;
+}
+
+#panel-about .about-kicker::before {
+  content: "";
+  width: 32px;
+  height: 1px;
+  background: #ed9e69;
+}
+
+#panel[data-view="about"] #panel-about .about-layout h3 {
+  margin: 27px 0 29px;
+  font: 400 49px/1.28 var(--serif);
+  letter-spacing: -.045em;
+  color: #f1eee7;
+}
+
+#panel-about .about-layout h3 span {
+  display: block;
+  white-space: nowrap;
+}
+
+#panel-about .about-layout h3 span:last-child {
+  color: #ddb595;
+}
+
+#panel-about .about-copy {
+  max-width: 810px;
+  padding-top: 23px;
+  border-top: 1px solid #8ca3a548;
+}
+
+#panel-about .about-copy p {
+  max-width: none;
+  margin: 0 0 17px;
+  color: #becac9;
+  font-size: 16px;
+  line-height: 1.86;
+  letter-spacing: .01em;
+}
+
+#panel-about .about-copy .about-thesis {
+  margin: 23px 0 0;
+  padding-left: 20px;
+  border-left: 2px solid #df9b6d;
+  color: #f0e8dd;
+}
+
+#panel[data-view="about"] #panel-about .about-proof {
+  align-self: center;
+  padding: 30px 26px 28px;
+  border: 1px solid #61777a70;
+  border-left: 2px solid #d99766;
+  background: linear-gradient(145deg, #26373dcb, #111c22d6 70%);
+  box-shadow: 0 16px 36px #02090d59;
+}
+
+#panel-about .about-proof > span {
+  margin-bottom: 30px;
+  line-height: 1.45;
+}
+
+#panel-about .about-proof-stat + .about-proof-stat {
+  margin-top: 24px;
+  padding-top: 24px;
+  border-top: 1px solid #8ca3a548;
+}
+
+#panel[data-view="about"] #panel-about .about-proof strong {
+  color: #f1eee7;
+  font-size: 52px;
+}
+
+#panel-about .about-proof-stat p {
+  margin: 8px 0 0;
+  color: #c1c9c6;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+#panel-about .about-proof small {
+  display: block;
+  margin-top: 29px;
+  padding-top: 15px;
+  border-top: 1px solid #8ca3a548;
+  color: #96a9a9;
+  font-size: 10px;
+  line-height: 1.75;
+}

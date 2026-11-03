@@ -1,0 +1,174 @@
+/* The selected highlight plays on its original card; the archive stays in place. */
+#panel[data-view="works"][data-archive-filter="shot"] .works-grid {
+  display: block;
+  min-width: 0;
+}
+.shot-carousel {
+  min-width: 0;
+  padding: 6px 0 10px;
+}
+.shot-carousel-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  margin: 0 1px 14px;
+}
+.shot-carousel-heading span {
+  display: block;
+  color: #f2e9dd;
+  font: 700 13px/1.35 var(--sans);
+  letter-spacing: .13em;
+}
+.shot-carousel-heading small {
+  display: block;
+  margin-top: 5px;
+  color: #a5b6b9;
+  font: 400 11px/1.4 var(--sans);
+}
+.shot-carousel-controls { display: flex; flex: none; gap: 8px; }
+.shot-carousel-controls button {
+  width: 38px;
+  height: 38px;
+  padding: 0;
+  border: 1px solid #779098;
+  background: #14232a;
+  color: #f4ece2;
+  cursor: pointer;
+  font: 700 18px/1 var(--sans);
+}
+.shot-carousel-controls button:hover,
+.shot-carousel-controls button:focus-visible {
+  border-color: #edb587;
+  background: #263b44;
+}
+.shot-carousel-track {
+  display: flex;
+  gap: 16px;
+  min-width: 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 12px 14px 10px;
+  overscroll-behavior-inline: contain;
+  scrollbar-width: none;
+  cursor: grab;
+  outline-offset: -2px;
+  touch-action: pan-x;
+  user-select: none;
+  scroll-behavior: auto;
+}
+.shot-carousel-track::-webkit-scrollbar { display: none; }
+.shot-carousel-track:active { cursor: grabbing; }
+.shot-carousel-card {
+  position: relative;
+  z-index: 0;
+  display: block;
+  flex: 0 0 220px;
+  min-width: 0;
+  aspect-ratio: 9 / 16;
+  transform-origin: center;
+  transition: transform .22s ease, box-shadow .22s ease;
+}
+.shot-carousel-card .work-thumb {
+  height: 100%;
+  aspect-ratio: auto;
+  border-color: #73898e;
+  background: #081016;
+}
+.shot-carousel-card > button {
+  height: 100%;
+  cursor: pointer;
+}
+.shot-carousel-card:hover { transform: translateY(-3px); }
+.shot-carousel-card .work-thumb img,
+.shot-carousel-card button:hover .work-thumb img {
+  filter: none;
+  transform: none;
+  transition: none;
+  -webkit-user-drag: none;
+}
+.shot-carousel-card.is-playing {
+  z-index: 2;
+  transform: scale(1.045);
+  box-shadow: 0 17px 39px #000a, 0 0 0 2px #e9ab79;
+}
+.shot-carousel-progress {
+  display: grid;
+  grid-template-columns: 46px minmax(0, 1fr) 112px;
+  align-items: center;
+  gap: 13px;
+  margin: 0 14px;
+  padding: 10px 0 0;
+  border-top: 1px solid #405158;
+  color: #c7d0cd;
+  font: 700 10px/1 var(--sans);
+  letter-spacing: .12em;
+}
+.shot-carousel-percent { color: #e8ac79; font-variant-numeric: tabular-nums; }
+.shot-carousel-hint { text-align: right; font-size: 9px; color: #91a5a7; }
+.shot-carousel-range {
+  width: 100%;
+  min-width: 0;
+  height: 14px;
+  padding: 0;
+  appearance: none;
+  -webkit-appearance: none;
+  background: transparent;
+  cursor: pointer;
+  --shot-progress: 0%;
+}
+.shot-carousel-range::-webkit-slider-runnable-track {
+  height: 3px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #e5a875 var(--shot-progress), #52666d var(--shot-progress));
+}
+.shot-carousel-range::-webkit-slider-thumb {
+  width: 11px;
+  height: 11px;
+  margin-top: -4px;
+  border: 2px solid #e5a875;
+  border-radius: 50%;
+  background: #0d1a20;
+  box-shadow: 0 0 0 3px #e5a87522;
+  appearance: none;
+  -webkit-appearance: none;
+}
+.shot-carousel-range::-moz-range-track { height: 3px; border-radius: 999px; background: #52666d; }
+.shot-carousel-range::-moz-range-progress { height: 3px; border-radius: 999px; background: #e5a875; }
+.shot-carousel-range::-moz-range-thumb { width: 9px; height: 9px; border: 2px solid #e5a875; border-radius: 50%; background: #0d1a20; }
+.shot-carousel-range:focus-visible { outline: 2px solid #e5a875; outline-offset: 3px; }
+.shot-carousel-card.is-playing > button { visibility: hidden; }
+.shot-inline-stage {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  background: #04090c;
+}
+.shot-inline-stage video {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  background: #04090c;
+}
+.shot-playback-close {
+  position: absolute;
+  z-index: 3;
+  top: 7px;
+  right: 7px;
+  min-width: 32px;
+  height: 32px;
+  padding: 0 7px;
+  border: 1px solid #b6c4c3;
+  background: #09151cdb;
+  color: #f4eee6;
+  cursor: pointer;
+  font: 700 15px/1 var(--sans);
+}
+.shot-playback-close:hover,
+.shot-playback-close:focus-visible { background: #e8e4db; color: #0b1418; }
+@media (prefers-reduced-motion: reduce) {
+  .shot-carousel-card { transition: none; }
+  .shot-carousel-track { scroll-behavior: auto; }
+}

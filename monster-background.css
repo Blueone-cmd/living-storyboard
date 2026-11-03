@@ -1,0 +1,124 @@
+/* Atmospheric creatures on the ruined coast. They remain behind both the
+   moving film strip (z 25) and the seven interactive actors (z 27). */
+.monster-background{
+  position:absolute;
+  inset:0;
+  z-index:7;
+  overflow:hidden;
+  pointer-events:none;
+  user-select:none;
+  isolation:isolate;
+}
+.monster-background .monster{
+  position:absolute;
+  display:block;
+  width:auto;
+  height:auto;
+  max-width:none;
+  object-fit:contain;
+  pointer-events:none;
+  user-select:none;
+  opacity:var(--monster-opacity,.4);
+  filter:brightness(var(--monster-brightness,.64)) saturate(.61) contrast(.88) blur(var(--monster-blur,1.1px));
+  animation:monster-drift var(--monster-duration,21s) ease-in-out var(--monster-delay,0s) infinite alternate;
+  will-change:transform;
+}
+
+/* Far silhouettes just peek through the mist above and beyond the reel. */
+.monster-dragon{
+  left:-75px;
+  top:520px;
+  width:405px!important;
+  height:auto!important;
+  scale:-1 1;
+  --monster-opacity:.31;
+  --monster-brightness:.83;
+  --monster-blur:1.8px;
+  --monster-duration:25s;
+  --monster-delay:-9s;
+  --drift-x:8px;
+  --drift-y:-5px;
+  -webkit-mask-image:radial-gradient(ellipse at 50% 48%,#000 40%,#0009 66%,transparent 96%);
+  mask-image:radial-gradient(ellipse at 50% 48%,#000 40%,#0009 66%,transparent 96%);
+}
+.monster-rain-demon{
+  right:-11px;
+  top:544px;
+  height:286px!important;
+  --monster-opacity:.32;
+  --monster-brightness:.84;
+  --monster-blur:1.5px;
+  --monster-duration:20s;
+  --monster-delay:-14s;
+  --drift-x:-5px;
+  --drift-y:-7px;
+  -webkit-mask-image:linear-gradient(180deg,transparent,#000 11%,#000 67%,transparent 100%);
+  mask-image:linear-gradient(180deg,transparent,#000 11%,#000 67%,transparent 100%);
+}
+
+/* Mid-distance shoreline creatures are partially swallowed by rock and surf. */
+.monster-sea-beast{
+  left:-47px;
+  top:678px;
+  height:292px!important;
+  --monster-opacity:.65;
+  --monster-brightness:1.03;
+  --monster-blur:.7px;
+  --monster-duration:18s;
+  --monster-delay:-4s;
+  --drift-x:3px;
+  --drift-y:-3px;
+  -webkit-mask-image:linear-gradient(180deg,#000 0%,#000 66%,transparent 100%);
+  mask-image:linear-gradient(180deg,#000 0%,#000 66%,transparent 100%);
+}
+.monster-mermaid{
+  left:171px;
+  top:754px;
+  height:176px!important;
+  --monster-opacity:.53;
+  --monster-brightness:.98;
+  --monster-blur:1px;
+  --monster-duration:23s;
+  --monster-delay:-12s;
+  --drift-x:4px;
+  --drift-y:-5px;
+  -webkit-mask-image:linear-gradient(180deg,#000 0%,#000 65%,transparent 100%);
+  mask-image:linear-gradient(180deg,#000 0%,#000 65%,transparent 100%);
+}
+.monster-ghouls{
+  right:252px;
+  top:755px;
+  height:187px!important;
+  --monster-opacity:.53;
+  --monster-brightness:.96;
+  --monster-blur:1px;
+  --monster-duration:24s;
+  --monster-delay:-7s;
+  --drift-x:-3px;
+  --drift-y:-2px;
+  -webkit-mask-image:linear-gradient(180deg,#000 0%,#000 69%,transparent 100%);
+  mask-image:linear-gradient(180deg,#000 0%,#000 69%,transparent 100%);
+}
+.monster-noah-beast{
+  right:-89px;
+  top:678px;
+  width:378px!important;
+  scale:-1 1;
+  --monster-opacity:.63;
+  --monster-brightness:1.02;
+  --monster-blur:.9px;
+  --monster-duration:19s;
+  --monster-delay:-16s;
+  --drift-x:-5px;
+  --drift-y:-2px;
+  -webkit-mask-image:linear-gradient(180deg,#000 0%,#000 69%,transparent 100%);
+  mask-image:linear-gradient(180deg,#000 0%,#000 69%,transparent 100%);
+}
+
+@keyframes monster-drift{
+  from{transform:translate3d(0,0,0)}
+  to{transform:translate3d(var(--drift-x,3px),var(--drift-y,-3px),0)}
+}
+@media (prefers-reduced-motion:reduce){
+  .monster-background .monster{animation:none;will-change:auto}
+}

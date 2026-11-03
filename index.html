@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="dark">
+  <meta name="description" content="AIGC 导演个人作品集：在一座可探索的电影场景里观看竖屏成片、镜头、角色与提示词。">
+  <title>LIVING STORYBOARD · AIGC 导演作品集</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="scene-v2.css">
+  <link rel="stylesheet" href="character-panel.css">
+  <link rel="stylesheet" href="monster-background.css">
+  <link rel="stylesheet" href="cast-motion.css">
+  <link rel="stylesheet" href="kyle-home.css">
+  <link rel="stylesheet" href="reel-video.css">
+  <link rel="stylesheet" href="drift-wall.css">
+  <link rel="stylesheet" href="archive-viewer.css">
+  <link rel="stylesheet" href="shot-carousel.css">
+  <link rel="stylesheet" href="archive-polish.css">
+  <link rel="stylesheet" href="prompt-navigation.css">
+  <link rel="stylesheet" href="about-director.css">
+  <script defer src="content.js"></script>
+  <script defer src="prompt-content.js"></script>
+  <script defer src="media-config.js"></script>
+  <script defer src="new-characters.js"></script>
+  <script defer src="reference-anchors.js"></script>
+  <script defer src="new-character-framing.js"></script>
+  <script defer src="fantasy-reference-update.js"></script>
+  <script defer src="fantasy-edge-fixes.js"></script>
+  <script defer src="old-money-threeview-v3.js"></script>
+  <script defer src="old-money-poster-cards.js"></script>
+  <script defer src="modern-reference-quality.js"></script>
+  <script defer src="film-reel.js"></script>
+  <script defer src="lower-world.js"></script>
+  <script defer src="app.js"></script>
+  <script defer src="cast-motion.js"></script>
+  <script defer src="dialog-fit.js"></script>
+  <script defer src="drift-wall.js"></script>
+  <script defer src="prompt-navigation.js"></script>
+</head>
+<body>
+  <div class="grain" aria-hidden="true"></div>
+  <main class="screen" id="screen" aria-label="AIGC 导演一屏作品集">
+    <div class="smoke smoke-a" aria-hidden="true"></div><div class="smoke smoke-b" aria-hidden="true"></div>
+    <div class="edge-light" aria-hidden="true"></div>
+
+    <header class="topbar">
+      <button class="brand" type="button" data-panel="about" aria-label="查看导演介绍"><span class="brand-monogram">LS<span>.</span></span><span class="brand-copy">LIVING<br>STORYBOARD</span></button>
+      <nav class="nav" aria-label="作品集导航">
+        <button type="button" data-panel="works" data-filter-target="film">WORKS</button>
+        <button type="button" data-panel="characters">CHARACTERS</button>
+        <button type="button" data-panel="about">ABOUT</button>
+      </nav>
+      <button class="sound-toggle" id="sound-toggle" type="button" aria-pressed="true" aria-label="关闭作品视频声音"><span class="sound-ring">◖</span><span id="sound-label">SOUND ON</span></button>
+    </header>
+
+    <div class="hero-composite" aria-label="三段作品影像合成的连续动态场景">
+      <video id="hero-composite-video" data-video-src="media/hero-composite-synced.mp4" poster="assets/hero-composite-synced-poster.webp" autoplay muted loop playsinline preload="auto" aria-hidden="true"></video>
+      <span class="hero-atmosphere" aria-hidden="true"></span>
+    </div>
+
+    <div class="title-block">
+      <span class="title-overline">A DIRECTOR'S UNIVERSE IN MOTION</span>
+      <h1>LIVING STORYBOARD</h1>
+      <span class="title-byline"><span class="title-byline-role">AIGC 导演</span><span class="title-byline-divider" aria-hidden="true"></span><span class="title-byline-name" id="director-name">钟冲锋</span></span>
+      <button class="enter-shot" type="button" data-panel="works" data-filter-target="film"><span class="enter-line"></span> ENTER THE SHOT <span class="enter-arrow">→</span><span class="enter-line"></span></button>
+    </div>
+
+    <div class="impact-line" aria-label="作品成绩与规模">
+      <span class="impact-heading">DIRECTOR'S IMPACT</span>
+      <button type="button" data-panel="about"><strong data-metric-value="0">2000<span>万+</span></strong><small data-metric-label="0">雷神之子 · TikTok累计播放</small></button>
+      <span class="impact-separator"></span>
+      <button type="button" data-panel="about"><strong data-metric-value="1">4500<span>万+</span></strong><small data-metric-label="1">荒岛求生 · TikTok累计播放</small></button>
+    </div>
+
+    <div class="film-ribbon" aria-label="精彩片段无限循环胶片导航"><div class="ribbon-track" id="reel-track"></div></div>
+
+    <div class="lower-world" aria-hidden="true"><canvas id="lower-world-motion" width="1672" height="348"></canvas></div>
+
+    <div class="monster-background" aria-hidden="true">
+      <img class="monster monster-dragon" src="assets/monsters/dragon.webp" alt="" draggable="false" decoding="async">
+      <img class="monster monster-rain-demon" src="assets/monsters/rain-demon.webp" alt="" draggable="false" decoding="async">
+      <img class="monster monster-sea-beast" src="assets/monsters/sea-beast.webp" alt="" draggable="false" decoding="async">
+      <img class="monster monster-mermaid" src="assets/monsters/mermaid.webp" alt="" draggable="false" decoding="async">
+      <img class="monster monster-ghouls" src="assets/monsters/ghouls.webp" alt="" draggable="false" decoding="async">
+      <img class="monster monster-noah-beast" src="assets/monsters/noah-beast.webp" alt="" draggable="false" decoding="async">
+    </div>
+
+    <div class="cast-layer" aria-label="角色入口">
+      <div class="cast-atmosphere" aria-hidden="true"></div>
+      <div id="cast-figures" class="cast-figures"></div>
+    </div>
+
+    <div class="scene-footer"><span><i class="live-point"></i> DIRECTOR'S PORTFOLIO / PUBLIC EDITION</span><button type="button" data-panel="works" data-filter-target="film">EXPLORE THE WORKS ↗</button><span>SELECT A FRAME TO ENTER ↗</span></div>
+  </main>
+
+  <dialog class="panel-dialog" id="panel" aria-label="作品集子窗口">
+    <div class="panel-shell">
+      <div class="dialog-top"><div><span class="dialog-label" id="panel-label">THE ARCHIVE</span><h2 id="panel-title">作品档案</h2></div><button id="panel-close" class="dialog-close" type="button" aria-label="关闭子窗口">CLOSE ×</button></div>
+      <div class="panel-body">
+        <section id="panel-works" class="panel-page" aria-label="作品档案" hidden><div class="archive-toolbar"><div class="filters" id="filters" role="group" aria-label="作品类型筛选"></div><div class="archive-count"><b id="archive-count">00</b> ITEMS</div></div><div class="film-categories" id="film-categories" hidden></div><div class="works-grid" id="works-grid"></div></section>
+        <section id="panel-characters" class="panel-page" aria-label="角色档案" hidden>
+          <div class="character-categories" id="character-categories" role="tablist" aria-label="角色类别"></div>
+          <div class="character-browser">
+            <div class="character-cards" id="character-cards" aria-label="角色列表"></div>
+            <div class="character-detail">
+              <h3 id="character-name">塞拉</h3>
+              <div class="character-detail-visuals">
+                <figure class="character-action-preview"><span>DIRECTED POSE</span><img id="character-action-image" alt=""><figcaption id="character-action-title"></figcaption></figure>
+                <figure class="character-source-preview"><span>ORIGINAL REFERENCE</span><div class="character-source-media"><canvas id="character-reference-canvas" width="320" height="470" role="img"></canvas><img id="character-reference-image" alt="" hidden></div><figcaption id="character-source-note"></figcaption></figure>
+              </div>
+              <div class="view-switch" id="view-switch" role="group" aria-label="切换原角色设定视角"><button type="button" data-view="front">正面</button><button type="button" data-view="side">侧面</button><button type="button" data-view="back">背面</button></div>
+              <details class="character-weapon" id="character-weapon" hidden><summary>雷神之斧 · 原武器设定 ↗</summary><img id="character-weapon-image" alt="雷神之斧原武器设定图"></details>
+            </div>
+          </div>
+        </section>
+        <section id="panel-about" class="panel-page" aria-label="导演介绍与作品数据" hidden>
+          <div class="about-layout">
+            <div class="about-editorial">
+              <span class="about-kicker">AIGC DIRECTOR / ABOUT</span>
+              <h3><span>AI重塑影像生产。</span><span>导演思维，让作品真正成立。</span></h3>
+              <div class="about-copy">
+                <p>表演训练让我更关注人物为什么这样行动、情绪是怎么发生的；片场经验让我知道镜头如何落地、团队如何配合；编剧经历则让我习惯从故事结构和人物动机出发。</p>
+                <p>进入AIGC创作后，我把这些传统影视方法延伸到样片验证、分镜设计、资产审核、团队协同与成片把控中。</p>
+                <p class="about-thesis">技术提升了画面的生成效率，但作品最终呈现出的质感，仍然取决于对人物、叙事和视听表达的判断。</p>
+              </div>
+            </div>
+            <aside class="about-proof" aria-label="项目播放数据">
+              <span>TIKTOK / PROJECT PERFORMANCE</span>
+              <div class="about-proof-stat"><strong>2000万+</strong><p>《雷神之子》累计播放</p></div>
+              <div class="about-proof-stat"><strong>4500万+</strong><p>《荒岛求生》累计播放</p></div>
+              <small>播放数据由项目方提供；项目制作职责与成片入口见作品档案。</small>
+            </aside>
+          </div>
+        </section>
+      </div>
+    </div>
+  </dialog>
+
+  <dialog class="viewer-dialog" id="viewer" aria-label="作品查看器">
+    <div class="viewer-shell"><div class="dialog-top"><div><span class="dialog-label">DIRECTOR'S VIEWER <span>／</span> <span id="viewer-index">001</span></span><h2 id="viewer-title">作品名称</h2></div><button id="viewer-close" class="dialog-close" type="button" aria-label="关闭作品查看器">CLOSE ×</button></div>
+      <div class="viewer-main"><div class="viewer-screen-wrap"><div class="viewer-screen"><video id="viewer-video" playsinline preload="metadata" controls controlslist="nodownload noremoteplayback" hidden></video><img id="viewer-image" alt="作品画面" hidden><div class="viewer-placeholder" id="viewer-placeholder"><span>◇</span>AWAITING THE REAL FILM<small>这里将播放你的 9:16 作品</small></div><div class="viewer-demo-badge" id="viewer-demo-badge">概念预览 / 非实际视频</div></div><div class="viewer-scrub"><button id="viewer-play" type="button" aria-label="播放或暂停">▶</button><input type="range" id="viewer-range" min="0" max="1000" value="0" aria-label="播放进度"><span id="viewer-time">00:00 / 00:00</span></div></div><div class="viewer-details"><div class="viewer-prompt-only"><h3 class="viewer-prompt-title"></h3><div class="viewer-prompt-copy" id="viewer-prompt-copy"></div><nav class="prompt-quick-nav" aria-label="提示词片段切换"><button id="prompt-quick-prev" type="button" aria-label="上一个提示词片段" aria-keyshortcuts="ArrowLeft"><span aria-hidden="true">←</span> 上一条</button><output id="prompt-quick-position" aria-live="polite">01 / 10</output><button id="prompt-quick-next" type="button" aria-label="下一个提示词片段" aria-keyshortcuts="ArrowRight">下一条 <span aria-hidden="true">→</span></button></nav></div><div class="viewer-meta"><span id="viewer-type">FILM</span><span>9:16 VERTICAL</span></div><p class="viewer-summary" id="viewer-summary"></p><div class="viewer-cliphead"><span>SHOT / PROMPT MAP</span><span id="chapter-count">00 NODES</span></div><div class="chapter-list" id="chapter-list"></div><div class="viewer-prompt"><span>PROMPT / DIRECTOR'S NOTE</span><p id="viewer-prompt-text"></p><small id="viewer-rationale"></small></div><div class="viewer-nav"><button type="button" id="viewer-prev">← PREV</button><button type="button" id="viewer-next">NEXT →</button></div></div></div>
+    </div>
+  </dialog>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+</body>
+</html>

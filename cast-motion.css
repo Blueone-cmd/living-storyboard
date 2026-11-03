@@ -1,0 +1,134 @@
+/* Homepage-only motion. All overlays stay behind the cast's click targets. */
+#cast-figures .cast-cut img.cast-standalone,
+#cast-figures .cast-spot:nth-child(4) .cast-cut img.cast-standalone { z-index: 2; }
+#cast-figures .cast-cut img.cast-cloth-slice {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  width: auto;
+  max-width: none;
+  height: var(--cast-source-height);
+  object-fit: contain;
+  transform: translateX(-50%);
+  transform-origin: var(--cloth-origin, 50% 35%);
+  clip-path: var(--cloth-clip);
+  -webkit-mask-image: linear-gradient(to bottom, transparent 27%, #0005 45%, #000d 58%, #000 70%);
+  mask-image: linear-gradient(to bottom, transparent 27%, #0005 45%, #000d 58%, #000 70%);
+  filter: brightness(1.035) contrast(1.04) saturate(1.03) drop-shadow(1px 2px 2px #0008);
+  opacity: .86;
+  pointer-events: none;
+  z-index: 1;
+  will-change: transform;
+  animation: cast-cloth-breathe var(--cloth-duration, 7s) ease-in-out var(--cloth-delay, 0s) infinite;
+}
+#cast-figures .cast-spot:nth-child(5) .cast-cloth-slice { opacity: .9; }
+#cast-figures .cast-spot:nth-child(3) .cast-cloth-slice { opacity: .8; }
+
+@keyframes cast-cloth-breathe {
+  0%, 100% { transform: translateX(-50%) translate3d(var(--cloth-start), 1px, 0) rotate(var(--cloth-start-turn)); }
+  42% { transform: translateX(-50%) translate3d(var(--cloth-swing), var(--cloth-rise), 0) rotate(var(--cloth-turn)); }
+  68% { transform: translateX(-50%) translate3d(var(--cloth-middle), -1px, 0) rotate(var(--cloth-middle-turn)); }
+}
+
+#cast-figures .cast-weapon-fx {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  width: 228px;
+  height: var(--cast-source-height);
+  display: block;
+  transform: translateX(-50%);
+  pointer-events: none;
+  z-index: 3;
+  color: #a9e9ff;
+  --energy-shadow: #4aaaff;
+  mix-blend-mode: screen;
+}
+#cast-figures .fx-sword { color: #ffd18e; --energy-shadow: #f56b30; }
+#cast-figures .cast-weapon-fx svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  opacity: .74;
+  filter: drop-shadow(0 0 3px var(--energy-shadow)) drop-shadow(0 0 8px var(--energy-shadow));
+  animation: cast-energy-breathe 4.8s ease-in-out infinite;
+}
+#cast-figures .fx-spear svg { animation-delay: -1.7s; }
+#cast-figures .fx-sword svg { animation-delay: -2.9s; }
+#cast-figures .cast-weapon-fx svg path { fill: none; stroke: currentColor; stroke-linecap: round; stroke-linejoin: round; }
+#cast-figures .cast-weapon-fx .energy-halo { stroke-width: 38; opacity: .18; }
+#cast-figures .cast-weapon-fx .energy-main { stroke-width: 13; opacity: .51; }
+#cast-figures .cast-weapon-fx .energy-core { stroke-width: 4; opacity: .86; }
+#cast-figures .fx-sword .energy-halo { stroke-width: 47; opacity: .22; }
+#cast-figures .fx-sword .energy-main { stroke-width: 17; opacity: .58; }
+#cast-figures .fx-sword .energy-core { stroke-width: 5; opacity: .86; }
+#cast-figures .cast-weapon-fx::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 95px;
+  height: 104px;
+  border-radius: 50%;
+  background: radial-gradient(ellipse, #75d4ff60 0%, #4dafff30 38%, transparent 74%);
+  filter: blur(7px);
+  pointer-events: none;
+  animation: cast-energy-breathe 4.8s ease-in-out -1.7s infinite;
+}
+#cast-figures .fx-sword::before {
+  left: 28%;
+  top: 43%;
+  width: 110px;
+  height: 135px;
+  background: radial-gradient(ellipse, #ff9e5360 0%, #ef542b30 40%, transparent 73%);
+  animation-delay: -2.9s;
+}
+#cast-figures .cast-energy-mote {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: currentColor;
+  box-shadow: 0 0 5px 1px var(--energy-shadow), 0 0 10px 2px var(--energy-shadow);
+  opacity: 0;
+  pointer-events: none;
+  animation: cast-energy-mote var(--mote-duration, 3.7s) ease-out var(--mote-delay, 0s) infinite;
+}
+#cast-figures .fx-sword .cast-energy-mote { width: 3px; height: 3px; }
+
+/* The duplicate is clipped to the true axe head; the shaft remains dark steel. */
+#cast-figures .cast-cut img.cast-axe-exact.cast-axe-aura {
+  clip-path: inset(0 67% 0 0);
+  opacity: .5;
+  z-index: 3;
+  pointer-events: none;
+  mix-blend-mode: screen;
+  filter: brightness(1.8) saturate(2.35) drop-shadow(0 0 3px #c7f4ff) drop-shadow(0 0 9px #4caeff);
+  animation: cast-axe-charge 4.5s ease-in-out -1.2s infinite;
+}
+
+@keyframes cast-energy-breathe {
+  0%, 100% { opacity: .58; }
+  43% { opacity: .93; }
+  72% { opacity: .7; }
+}
+@keyframes cast-energy-mote {
+  0%, 15%, 100% { opacity: 0; transform: translate3d(0, 0, 0) scale(.45); }
+  35% { opacity: .9; transform: translate3d(2px, -3px, 0) scale(1.1); }
+  72% { opacity: .26; transform: translate3d(var(--mote-drift, 6px), -10px, 0) scale(.7); }
+}
+@keyframes cast-axe-charge {
+  0%, 100% { opacity: .3; }
+  48% { opacity: .72; }
+  76% { opacity: .44; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #cast-figures .cast-cloth-slice,
+  #cast-figures .cast-energy-mote,
+  #cast-figures .cast-axe-aura { display: none; animation: none; }
+  #cast-figures .cast-weapon-fx svg,
+  #cast-figures .cast-weapon-fx::before { animation: none; opacity: .36; }
+}
