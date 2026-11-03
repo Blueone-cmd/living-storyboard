@@ -176,6 +176,14 @@
     });
   }
 
+  function syncBackgroundVideo() {
+    const hero = $("#hero-composite-video");
+    if (!hero) return;
+    if (document.hidden || document.querySelector("dialog[open]")) {
+      if (!hero.paused) hero.pause();
+    } else if (hero.paused) hero.play().catch(() => {});
+  }
+
   function orderedWorks() {
     return data.works.filter((work) => work.type === currentFilter &&
       (currentFilter !== "film" || !selectedFilmCategory || filmCategoryOf(work) === selectedFilmCategory));
@@ -318,7 +326,7 @@
     renderWorks();
   }
 
-  function openPanel(key, opener, filterTarget) {
+  function openPanel(key, opener, filterTarget, characterIndex) {
     if (!panelInfo[key]) return;
     if (key === "works") setFilter(filters.some((filter) => filter.key === filterTarget) ? filterTarget : "film");
     const panel = $("#panel");
@@ -335,8 +343,9 @@
       panelOpener = opener || document.activeElement;
       panel.showModal();
     }
+    syncBackgroundVideo();
     document.body.classList.add("dialog-open");
-    if (key === "characters") requestAnimationFrame(() => revealCharacter(selectedCharacter));
+    if (key === "characters") setCharacter(Number.isInteger(characterIndex) ? characterIndex : selectedCharacter, Number.isInteger(characterIndex) ? "front" : selectedView);
     $("#panel-close").focus({ preventScroll: true });
     panel.querySelector('.panel-body').scrollTop = 0;
   }
@@ -591,6 +600,7 @@
       viewerOpener = opener || document.activeElement;
       dialog.showModal();
     }
+    syncBackgroundVideo();
     document.body.classList.add("dialog-open");
     $("#viewer-close").focus({ preventScroll: true });
     if (work.video) video.play().catch(() => {});
@@ -615,6 +625,40 @@
   let characterReferencePaint = null;
   let characterReferenceResizeObserver = null;
   const characterViewNames = { front: "正面", side: "侧面", back: "背面" };
+  function requestCharacterReference(path, priority = "auto") {
+    if (!path) return null;
+    let image = characterReferenceCache.get(path);
+    if (image?.complete && !image.naturalWidth) image = null;
+    if (image) characterReferenceCache.delete(path);
+    else {
+      image = new Image();
+      image.decoding = "async";
+      image.fetchPriority = priority;
+      image.src = path;
+    }
+    characterReferenceCache.set(path, image);
+    while (characterReferenceCache.size > 18) characterReferenceCache.delete(characterReferenceCache.keys().next().value);
+    if (priority === "high") image.fetchPriority = "high";
+    return image;
+  }
+  function prefetchCharacterReferences(character, activeView, token) {
+    if (navigator.connection?.saveData) return;
+    setTimeout(() => {
+      if (token !== characterReferenceToken || !$("#panel").open || $("#panel").dataset.view !== "characters") return;
+      for (const view of ["front", "side", "back"]) {
+        if (view !== activeView) requestCharacterReference(character.views?.[view], "low");
+      }
+    }, 120);
+    setTimeout(() => {
+      if (token !== characterReferenceToken || !$("#panel").open || $("#panel").dataset.view !== "characters") return;
+      const members = orderedCategoryCharacters(selectedCategory);
+      const current = members.findIndex(({ character: member }) => member.id === character.id);
+      for (const offset of [-1, 1]) {
+        const neighbor = members[(current + offset + members.length) % members.length]?.character;
+        if (neighbor?.id !== character.id) requestCharacterReference(neighbor?.views?.front, "low");
+      }
+    }, 700);
+  }
   let characterRailPointer = null;
   let characterRailDragged = false;
 
@@ -725,10 +769,11 @@
     }
     $("#panel-characters .character-rail-head > div > span").textContent = `THE CAST / 01 — ${pad2(characters.length)}`;
     const cardHTML = ({ character, index }, ordinal, copy) => {
-      const image = character.castImage ? `<img class="character-render" src="${escapeHTML(character.castImage)}" alt="" loading="lazy">` : `<img class="character-render" alt="" hidden>`;
+      const cardImage = character.cardImage || character.castImage;
+      const image = cardImage ? `<img class="character-render" src="${escapeHTML(cardImage)}" alt="" loading="lazy" decoding="async">` : `<img class="character-render" alt="" hidden>`;
       const cloneAttributes = copy === 1 ? "" : ' tabindex="-1" aria-hidden="true"';
       const sourceNumber = Number(character.id?.match(/(\d+)$/)?.[1]) || ordinal + 1;
-      return `<button class="character-card ${index === selectedCharacter ? "active" : ""}" type="button" data-character="${index}" data-copy="${copy}" aria-label="查看${escapeHTML(character.name)}角色档案" aria-pressed="${index === selectedCharacter}"${cloneAttributes}><span class="character-halo"></span><span class="character-shadow"></span><span class="character-figure" ${character.castImage ? "hidden" : ""}></span>${image}<span class="character-pending" ${character.castImage ? "hidden" : ""}>图像读取失败</span><span class="character-number">${pad2(sourceNumber)}</span><span class="character-action-tag">${escapeHTML(character.action || "")}</span><span class="character-name">${escapeHTML(character.name)}</span></button>`;
+      return `<button class="character-card ${index === selectedCharacter ? "active" : ""}" type="button" data-character="${index}" data-copy="${copy}" aria-label="查看${escapeHTML(character.name)}角色档案" aria-pressed="${index === selectedCharacter}"${cloneAttributes}><span class="character-halo"></span><span class="character-shadow"></span><span class="character-figure" ${cardImage ? "hidden" : ""}></span>${image}<span class="character-pending" ${cardImage ? "hidden" : ""}>图像读取失败</span><span class="character-number">${pad2(sourceNumber)}</span><span class="character-action-tag">${escapeHTML(character.action || "")}</span><span class="character-name">${escapeHTML(character.name)}</span></button>`;
     };
     cards.innerHTML = `<div class="character-track" id="character-track">${Array.from({ length: 3 }, (_, copy) => characters.map((entry, ordinal) => cardHTML(entry, ordinal, copy)).join("")).join("")}</div>`;
     if (!characters.some(({ index }) => index === selectedCharacter)) selectedCharacter = characters[0]?.index ?? 0;
@@ -769,6 +814,7 @@
       button.title = isAvailable ? `${character.name}·${characterViewNames[button.dataset.view]}原设定` : "原素材未提供此视角";
     });
 
+    if (!$("#panel").open || $("#panel").dataset.view !== "characters") return;
     const referencePath = character.views?.[availableView] || "";
     const sourceImage = $("#character-reference-image");
     const sourceCanvas = $("#character-reference-canvas");
@@ -782,21 +828,20 @@
       sourceImage.hidden = true;
       sourceCanvas.hidden = false;
       sourceCanvas.setAttribute("aria-label", `${character.name}${characterViewNames[availableView]}原设定`);
-      // Clear the previous character immediately while the next view loads.
-      // Otherwise a slow image can briefly show the wrong category or pose.
-      sourceCanvas.getContext("2d")?.clearRect(0, 0, sourceCanvas.width, sourceCanvas.height);
-      delete sourceCanvas.dataset.paintedView;
       const sourceMedia = sourceCanvas.parentElement;
+      sourceMedia.classList.add("is-loading");
+      sourceMedia.classList.remove("is-error");
+      // Keep the previous angle visible until the replacement is decoded.
+      // A different person's portrait must be cleared immediately.
+      if (!sourceCanvas.dataset.paintedView?.startsWith(`${character.id}:`)) {
+        sourceCanvas.getContext("2d")?.clearRect(0, 0, sourceCanvas.width, sourceCanvas.height);
+        delete sourceCanvas.dataset.paintedView;
+      }
       if (!characterReferenceResizeObserver && "ResizeObserver" in window) {
         characterReferenceResizeObserver = new ResizeObserver(() => characterReferencePaint?.());
         characterReferenceResizeObserver.observe(sourceMedia);
       }
-      let referenceImage = characterReferenceCache.get(referencePath);
-      if (!referenceImage) {
-        referenceImage = new Image();
-        characterReferenceCache.set(referencePath, referenceImage);
-        referenceImage.src = referencePath;
-      }
+      const referenceImage = requestCharacterReference(referencePath, "high");
       const paint = () => {
         if (requestToken !== characterReferenceToken || !referenceImage.naturalWidth) return;
         const context = sourceCanvas.getContext("2d");
@@ -832,14 +877,35 @@
         context.clearRect(0, 0, sourceCanvas.width, sourceCanvas.height);
         context.drawImage(referenceImage, sourceX, sourceY, sourceWidth, sourceHeight, sourceCanvas.width / 2 - bodyCenter * drawWidth, sourceCanvas.height * frameCenterY - (top + bottom) / 2 * drawHeight, drawWidth, drawHeight);
         sourceCanvas.dataset.paintedView = `${character.id}:${availableView}`;
+        sourceMedia.classList.remove("is-loading", "is-error");
       };
       characterReferencePaint = paint;
-      if (referenceImage.complete && referenceImage.naturalWidth) paint();
-      else referenceImage.addEventListener("load", paint, { once: true });
+      const showReference = () => {
+        if (requestToken !== characterReferenceToken) return;
+        const ready = referenceImage.decode?.();
+        Promise.resolve(ready).catch(() => {}).then(() => {
+          if (requestToken !== characterReferenceToken) return;
+          paint();
+          prefetchCharacterReferences(character, availableView, requestToken);
+        });
+      };
+      const showReferenceError = () => {
+        if (requestToken !== characterReferenceToken) return;
+        sourceMedia.classList.remove("is-loading");
+        sourceMedia.classList.add("is-error");
+      };
+      if (referenceImage.complete) {
+        if (referenceImage.naturalWidth) showReference();
+        else showReferenceError();
+      } else {
+        referenceImage.addEventListener("load", showReference, { once: true });
+        referenceImage.addEventListener("error", showReferenceError, { once: true });
+      }
     } else {
       characterReferencePaint = null;
       sourceCanvas.hidden = true;
       delete sourceCanvas.dataset.paintedView;
+      sourceCanvas.parentElement.classList.remove("is-loading", "is-error");
       sourceImage.hidden = !referencePath;
       sourceImage.src = referencePath;
       sourceImage.alt = `${character.name}${characterViewNames[availableView]}原设定图`;
@@ -904,8 +970,7 @@
       if (castSpot) {
         event.preventDefault();
         const index = Number(castSpot.dataset.character);
-        openPanel("characters", castSpot);
-        setCharacter(index, "front");
+        openPanel("characters", castSpot, null, index);
         return;
       }
       const panelTrigger = target.closest("[data-panel]");
@@ -931,6 +996,7 @@
     $("#panel").addEventListener("close", () => {
       closeInlineFilm();
       syncDialogState();
+      syncBackgroundVideo();
       if (!$("#viewer").open) restoreFocus(panelOpener);
       panelOpener = null;
     });
@@ -946,13 +1012,12 @@
       video.load();
       viewerList = [];
       syncDialogState();
+      syncBackgroundVideo();
       restoreFocus(viewerOpener);
       viewerOpener = null;
     });
     document.addEventListener("visibilitychange", () => {
-      if (document.hidden) return;
-      const hero = $("#hero-composite-video");
-      if (hero.paused) hero.play().catch(() => {});
+      syncBackgroundVideo();
     });
     $("#viewer").addEventListener("click", (event) => { if (event.target === $("#viewer")) closeViewer(); });
     $("#viewer-prev").addEventListener("click", () => navigateViewer(-1));

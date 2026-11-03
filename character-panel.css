@@ -337,3 +337,22 @@
   -webkit-mask-image:none;
   mask-image:none;
 }
+
+#panel-characters .character-source-media.is-loading::after,
+#panel-characters .character-source-media.is-error::after{
+  position:absolute;
+  z-index:2;
+  right:12px;
+  bottom:12px;
+  padding:7px 10px;
+  border:1px solid #b7c6c266;
+  background:#0b151bc9;
+  color:#e5e7df;
+  font:600 11px/1.2 var(--sans);
+  letter-spacing:.04em;
+  pointer-events:none;
+}
+#panel-characters .character-source-media.is-loading::after{content:"画面载入中…"}
+#panel-characters .character-source-media.is-error::after{content:"图片暂时无法加载"}
+#panel-characters .character-cards.is-dragging .character-render{filter:none}
+#panel-characters .character-cards.is-dragging .character-card{transition:none}

@@ -31,14 +31,14 @@
     wall.append(scene);
     worksGrid.before(wall);
 
-    for (const [slot, imageIndex] of order.entries()) {
+    for (const imageIndex of order) {
       const tile = document.createElement("div");
       tile.className = "drift-tile";
       tile.style.setProperty("--still-aspect", `${imageWidths[imageIndex]} / 1200`);
       const image = document.createElement("img");
       image.src = images[imageIndex];
       image.alt = `电影剧照画面 ${imageIndex + 1}`;
-      image.loading = slot < 12 ? "eager" : "lazy";
+      image.loading = "lazy";
       image.decoding = "async";
       tile.append(image);
       scene.append(tile);
