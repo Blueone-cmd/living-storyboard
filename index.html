@@ -18,6 +18,7 @@
   <link rel="stylesheet" href="archive-viewer.css">
   <link rel="stylesheet" href="shot-carousel.css">
   <link rel="stylesheet" href="archive-polish.css">
+  <link rel="stylesheet" href="project-evidence.css">
   <link rel="stylesheet" href="prompt-navigation.css">
   <link rel="stylesheet" href="about-director.css">
   <script defer src="content.js"></script>
@@ -70,9 +71,9 @@
 
     <div class="impact-line" aria-label="作品成绩与规模">
       <span class="impact-heading">DIRECTOR'S IMPACT</span>
-      <button type="button" data-panel="about"><strong data-metric-value="0">2000<span>万+</span></strong><small data-metric-label="0">雷神之子 · TikTok累计播放</small></button>
+      <button type="button" data-panel="works" data-film-category-target="thor" aria-label="查看雷神系列作品档案"><strong data-metric-value="0">2000<span>万+</span></strong><small data-metric-label="0">雷神之子 · TikTok累计播放</small></button>
       <span class="impact-separator"></span>
-      <button type="button" data-panel="about"><strong data-metric-value="1">4500<span>万+</span></strong><small data-metric-label="1">荒岛求生 · TikTok累计播放</small></button>
+      <button type="button" data-panel="works" data-film-category-target="island" aria-label="查看荒岛系列作品档案"><strong data-metric-value="1">4500<span>万+</span></strong><small data-metric-label="1">荒岛求生 · TikTok累计播放</small></button>
     </div>
 
     <div class="film-ribbon" aria-label="精彩片段无限循环胶片导航"><div class="ribbon-track" id="reel-track"></div></div>
@@ -126,12 +127,26 @@
                 <p>进入AIGC创作后，我把这些传统影视方法延伸到样片验证、分镜设计、资产审核、团队协同与成片把控中。</p>
                 <p class="about-thesis">技术提升了画面的生成效率，但作品最终呈现出的质感，仍然取决于对人物、叙事和视听表达的判断。</p>
               </div>
+              <div class="about-proof" aria-label="项目播放数据">
+                <div class="about-proof-stat"><strong>2000万+</strong><span>《雷神之子》累计播放</span></div>
+                <div class="about-proof-stat"><strong>4500万+</strong><span>《荒岛求生》累计播放</span></div>
+              </div>
             </div>
-            <aside class="about-proof" aria-label="项目播放数据">
-              <span>TIKTOK / PROJECT PERFORMANCE</span>
-              <div class="about-proof-stat"><strong>2000万+</strong><p>《雷神之子》累计播放</p></div>
-              <div class="about-proof-stat"><strong>4500万+</strong><p>《荒岛求生》累计播放</p></div>
-              <small>播放数据由项目方提供；项目制作职责与成片入口见作品档案。</small>
+            <aside class="about-contact" aria-label="联系钟冲锋">
+              <div class="about-contact-head">
+                <span>CONTACT / 合作联系</span>
+                <h4>钟冲锋</h4>
+                <p>AIGC导演 <i aria-hidden="true">/</i> AIGC执行导演</p>
+              </div>
+              <div class="about-contact-links">
+                <a href="tel:+8615179956983" aria-label="拨打电话 151 7995 6983"><span>电话</span><strong>151 7995 6983</strong><b aria-hidden="true">↗</b></a>
+                <a href="mailto:1581694931@qq.com" aria-label="发送邮件至 1581694931@qq.com"><span>邮箱</span><strong>1581694931@qq.com</strong><b aria-hidden="true">↗</b></a>
+              </div>
+              <div class="about-contact-qr">
+                <div class="about-contact-qr-top"><span>WECHAT / 微信</span><small>大眼圆</small></div>
+                <a class="about-qr-frame" href="assets/wechat-qr.jpg" target="_blank" rel="noopener" aria-label="打开微信二维码原图，扫码添加大眼圆"><img src="assets/wechat-qr.jpg" alt="钟冲锋的微信二维码" loading="lazy" decoding="async"></a>
+                <span class="about-qr-note">扫码联系 <b aria-hidden="true">↗</b></span>
+              </div>
             </aside>
           </div>
         </section>

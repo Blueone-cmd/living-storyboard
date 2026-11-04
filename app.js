@@ -22,6 +22,7 @@
     thor: {
       title: "My Bloodline Is a Thunder God", name: "雷神之子",
       metrics: ["TikTok累计播放2000万+", "40集", "约50分钟"],
+      evidence: ["assets/evidence/thor-data-01.png", "assets/evidence/thor-data-02.png", "assets/evidence/thor-ai.png", "assets/evidence/thor-production.png"],
       synopsis: "男频逆袭叙事与西方雷神神话的融合。故事围绕雷神血脉带来的身份转折与能力成长展开，通过不断升级的冲突、能力体系与奇幻视觉，形成节奏紧凑的高燃成长体验。",
       roleTitle: "执行导演｜制作流程与重点集落地",
       role: "从前期样片验证进入正片批量落地，统筹40集内容排期与任务分配，协调3名AI生成制作和2名剪辑并行推进。重点负责高燃集数的镜头呈现、奇幻视效、关键资产及成片质量审核，并将项目经验沉淀为标准化制作SOP，支持团队在约两周内完成交付。",
@@ -30,6 +31,7 @@
     island: {
       title: "Treasure Island Stranding: Five Goddess-Level Beauties Rely on Me Alone", name: "荒岛求生",
       metrics: ["TikTok累计播放4500万+", "重点集单集播放破1000万", "30集｜约45分钟"],
+      evidence: ["assets/evidence/island-data-01.png", "assets/evidence/island-data-02.png", "assets/evidence/island-ai.png", "assets/evidence/island-production.png"],
       synopsis: "一场突如其来的海难，让男主与多位女性角色流落荒岛。故事围绕资源获取、环境危机和人物关系展开，在不断升级的生存压力中推动角色从分歧走向协作，形成冒险、悬念与情感关系并行的生存故事。",
       roleTitle: "执行导演｜样片制作与成片交付",
       role: "负责前期样片制作，并通过样片确定项目的视觉方向与镜头标准；统筹30集内容排期、任务分配及重点集落地，协调2—3名AI生成制作与2名剪辑并行推进。同时负责关键资产、镜头质量与成片审核，在约两周内完成整体交付。",
@@ -42,6 +44,11 @@
   let filmReel = null;
   let currentFilter = "film";
   let selectedFilmCategory = null;
+  let evidenceViewer = null;
+  let evidenceOpener = null;
+  let evidenceImages = [];
+  let evidenceIndex = 0;
+  let evidenceObserver = null;
   let galleryList = [];
   let viewerList = [];
   let activeWork = null;
@@ -206,16 +213,93 @@
     }).join("");
   }
 
+  function renderProjectStory(project, categoryKey) {
+    const evidence = (project.evidence || []).map((src, index) =>
+      `<button type="button" class="project-evidence-item" data-evidence-project="${escapeHTML(categoryKey)}" data-evidence-index="${index}" aria-label="放大查看${escapeHTML(project.name)}项目记录第${index + 1}张"><img data-evidence-src="${escapeHTML(src)}" alt="${escapeHTML(project.name)}项目记录${index + 1}" decoding="async"><span aria-hidden="true">↗</span></button>`
+    ).join("");
+    return `<aside class="film-category-story" data-project-style="${escapeHTML(categoryKey)}" aria-label="${escapeHTML(project.name)}项目介绍">
+      <div class="project-story-header"><div class="project-story-eyebrow"><span class="project-story-kicker">PROJECT FILE / 项目介绍</span><span class="project-story-edition">DIRECTED WORK</span></div><h3 class="project-story-title">${escapeHTML(project.title)}</h3><p class="project-story-name">${escapeHTML(project.name)}</p></div>
+      <div class="project-story-metrics">${project.metrics.map((metric) => `<span>${escapeHTML(metric)}</span>`).join("")}</div>
+      <div class="project-story-copy"><section class="project-story-section"><h4><span>01</span> 项目简介</h4><p>${escapeHTML(project.synopsis)}</p></section><section class="project-story-section"><h4><span>02</span> ${escapeHTML(project.roleTitle)}</h4><p>${escapeHTML(project.role)}</p></section></div>
+      <a class="project-story-link" href="${escapeHTML(project.watchUrl)}" target="_blank" rel="noopener noreferrer">观看正片 <span aria-hidden="true">↗</span></a><p class="project-story-tip">观看提示：TikTok链接需使用魔法网络访问。</p>
+      <div class="project-evidence-divider" aria-hidden="true"><span>PROJECT EVIDENCE</span><span>↓</span></div><div class="project-evidence-grid">${evidence}</div>
+    </aside>`;
+  }
+
+  function observeProjectEvidence(story) {
+    evidenceObserver?.disconnect();
+    const images = $$('img[data-evidence-src]', story);
+    const loadImage = (image) => {
+      image.src = image.dataset.evidenceSrc;
+      delete image.dataset.evidenceSrc;
+    };
+    if (!("IntersectionObserver" in window)) { images.forEach(loadImage); return; }
+    evidenceObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        loadImage(entry.target);
+        evidenceObserver.unobserve(entry.target);
+      });
+    }, { root: story, rootMargin: "0px 0px 80px 0px" });
+    images.forEach((image) => evidenceObserver.observe(image));
+  }
+
+  function openEvidenceViewer(projectKey, index, opener) {
+    const project = projectIntroductions[projectKey];
+    if (!project?.evidence?.[index]) return;
+    evidenceImages = project.evidence;
+    evidenceIndex = index;
+    evidenceOpener = opener;
+    if (!evidenceViewer) {
+      evidenceViewer = document.createElement("dialog");
+      evidenceViewer.className = "project-evidence-dialog";
+      evidenceViewer.setAttribute("aria-label", "项目记录图片查看器");
+      evidenceViewer.innerHTML = `<div class="project-evidence-viewer"><div class="project-evidence-viewer-top"><span>PROJECT EVIDENCE <b data-evidence-count></b></span><button type="button" data-evidence-close aria-label="关闭图片">关闭 ×</button></div><div class="project-evidence-viewer-body"><button type="button" data-evidence-step="-1" aria-label="上一张图片">←</button><img alt="项目记录放大图"><button type="button" data-evidence-step="1" aria-label="下一张图片">→</button></div></div>`;
+      document.body.appendChild(evidenceViewer);
+      evidenceViewer.addEventListener("click", (event) => {
+        if (event.target === evidenceViewer || event.target.closest("[data-evidence-close]")) { evidenceViewer.close(); return; }
+        const step = event.target.closest("[data-evidence-step]");
+        if (step) { evidenceIndex = (evidenceIndex + Number(step.dataset.evidenceStep) + evidenceImages.length) % evidenceImages.length; showEvidenceImage(); }
+      });
+      evidenceViewer.addEventListener("keydown", (event) => {
+        if (event.key !== "ArrowLeft" && event.key !== "ArrowRight") return;
+        event.preventDefault();
+        evidenceIndex = (evidenceIndex + (event.key === "ArrowLeft" ? -1 : 1) + evidenceImages.length) % evidenceImages.length;
+        showEvidenceImage();
+      });
+      evidenceViewer.addEventListener("close", () => {
+        evidenceViewer.querySelector("img").removeAttribute("src");
+        syncBackgroundVideo();
+        restoreFocus(evidenceOpener);
+        evidenceOpener = null;
+      });
+    }
+    showEvidenceImage();
+    evidenceViewer.showModal();
+    syncBackgroundVideo();
+    evidenceViewer.querySelector("[data-evidence-close]").focus({ preventScroll: true });
+  }
+
+  function showEvidenceImage() {
+    if (!evidenceViewer || !evidenceImages[evidenceIndex]) return;
+    const image = evidenceViewer.querySelector("img");
+    image.src = evidenceImages[evidenceIndex];
+    image.alt = `项目记录第${evidenceIndex + 1}张放大图`;
+    evidenceViewer.querySelector("[data-evidence-count]").textContent = `${pad2(evidenceIndex + 1)} / ${pad2(evidenceImages.length)}`;
+  }
+
   function renderFilmCategories() {
     const host = $("#film-categories");
     if (!host) return;
+    evidenceObserver?.disconnect();
     host.hidden = currentFilter !== "film";
     if (currentFilter !== "film") { host.innerHTML = ""; return; }
     if (selectedFilmCategory) {
       const category = filmCategories.find((item) => item.key === selectedFilmCategory);
       const project = projectIntroductions[selectedFilmCategory];
-      const story = project ? `<aside class="film-category-story" aria-label="${escapeHTML(project.name)}项目介绍"><span class="project-story-kicker">PROJECT FILE / 项目介绍</span><h3 class="project-story-title">${escapeHTML(project.title)}</h3><p class="project-story-name">${escapeHTML(project.name)}</p><div class="project-story-metrics">${project.metrics.map((metric) => `<span>${escapeHTML(metric)}</span>`).join("")}</div><section class="project-story-section"><h4>项目简介</h4><p>${escapeHTML(project.synopsis)}</p></section><section class="project-story-section"><h4>${escapeHTML(project.roleTitle)}</h4><p>${escapeHTML(project.role)}</p></section><a class="project-story-link" href="${escapeHTML(project.watchUrl)}" target="_blank" rel="noopener noreferrer">观看正片 <span aria-hidden="true">↗</span></a><p class="project-story-tip">观看提示：TikTok链接需使用魔法网络访问。</p></aside>` : "";
+      const story = project ? renderProjectStory(project, selectedFilmCategory) : "";
       host.innerHTML = `<div class="film-category-heading"><button type="button" data-film-category-back aria-label="返回成片分类">← 返回分类</button><div><span>SELECTED COLLECTION</span><h3>${escapeHTML(category?.name || "成片视频")}</h3></div></div>${story}`;
+      if (project) observeProjectEvidence(host.querySelector(".film-category-story"));
       return;
     }
     host.innerHTML = `<div class="film-category-grid">${filmCategories.map((category) => {
@@ -938,6 +1022,11 @@
         if (track) track.scrollBy({ left: Number(shotScroll.dataset.shotScroll) * Math.round(track.clientWidth * .72), behavior: "smooth" });
         return;
       }
+      const evidence = target.closest("[data-evidence-project][data-evidence-index]");
+      if (evidence) {
+        openEvidenceViewer(evidence.dataset.evidenceProject, Number(evidence.dataset.evidenceIndex), evidence);
+        return;
+      }
       const open = target.closest("[data-open]");
       if (open) {
         event.preventDefault();
@@ -980,6 +1069,12 @@
       if (panelTrigger) {
         event.preventDefault();
         openPanel(panelTrigger.dataset.panel, panelTrigger, panelTrigger.dataset.filterTarget);
+        const projectKey = panelTrigger.dataset.filmCategoryTarget;
+        if (panelTrigger.dataset.panel === "works" && filmCategories.some((item) => item.key === projectKey)) {
+          selectedFilmCategory = projectKey;
+          renderWorks();
+          $("#panel").querySelector(".panel-body").scrollTop = 0;
+        }
         return;
       }
       const filter = event.target.closest("[data-filter]");

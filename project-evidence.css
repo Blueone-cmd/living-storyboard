@@ -1,0 +1,232 @@
+/* Project dossiers: all core text and the film link come before the evidence gallery. */
+.impact-line button {
+  min-height: 44px;
+  padding: 3px 6px;
+  margin: -3px -6px;
+  cursor: pointer;
+}
+.impact-line button:focus-visible { outline: 2px solid #f2bb8f; outline-offset: 4px; }
+#panel[data-view="works"] .film-category-story {
+  box-sizing: border-box;
+  display: block;
+  height: 562px;
+  padding: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: #8eaaa9 #0b171d;
+  border: 1px solid #607780;
+  background: #101e25;
+  box-shadow: 0 17px 35px #0007;
+}
+#panel[data-view="works"] .film-category-story::-webkit-scrollbar { width: 6px; }
+#panel[data-view="works"] .film-category-story::-webkit-scrollbar-track { background: #0b171d; }
+#panel[data-view="works"] .film-category-story::-webkit-scrollbar-thumb { background: #8eaaa9; border-radius: 20px; }
+
+#panel[data-view="works"] .project-story-header {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  padding: 18px 21px 13px;
+  border-bottom: 1px solid #8fa9ab3d;
+}
+#panel[data-view="works"] .project-story-header::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  opacity: .85;
+}
+#panel[data-view="works"] .film-category-story[data-project-style="thor"] .project-story-header::before {
+  background: radial-gradient(circle at 93% 8%, #5886a05a, transparent 36%), linear-gradient(110deg, #183242, #12232d 66%, #0c1922);
+}
+#panel[data-view="works"] .film-category-story[data-project-style="island"] .project-story-header::before {
+  background: radial-gradient(circle at 94% 4%, #b68b535c, transparent 35%), linear-gradient(110deg, #18343a, #11282d 65%, #102126);
+}
+#panel[data-view="works"] .project-story-header::after {
+  content: "";
+  position: absolute;
+  right: 21px;
+  bottom: 14px;
+  width: 65px;
+  height: 1px;
+  background: #dbad7c;
+  opacity: .75;
+}
+#panel[data-view="works"] .project-story-eyebrow {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+#panel[data-view="works"] .project-story-kicker { color: #e8b48b; font-size: 9px; letter-spacing: .17em; }
+#panel[data-view="works"] .project-story-edition { color: #b4c9cc; font: 700 8px/1.2 var(--sans); letter-spacing: .15em; }
+#panel[data-view="works"] .film-category-story .project-story-title {
+  margin: 0 0 4px;
+  max-width: 410px;
+  color: #f8f1e9;
+  font: 400 18px/1.14 var(--serif);
+  letter-spacing: -.015em;
+}
+#panel[data-view="works"] .film-category-story .project-story-name {
+  margin: 0;
+  color: #f0c39f;
+  font: 400 15px/1.2 var(--serif);
+}
+#panel[data-view="works"] .film-category-story .project-story-metrics {
+  display: grid;
+  grid-template-columns: 1.35fr 1fr 1fr;
+  gap: 0;
+  margin: 0;
+  border: 0;
+  border-bottom: 1px solid #71858a68;
+  background: #0e1d25;
+}
+#panel[data-view="works"] .film-category-story .project-story-metrics span {
+  box-sizing: border-box;
+  align-items: center;
+  min-height: 41px;
+  padding: 8px 11px;
+  border-right: 1px solid #71858a68;
+  background: transparent;
+  color: #dce8e5;
+  font: 700 10px/1.25 var(--sans);
+}
+#panel[data-view="works"] .film-category-story .project-story-metrics span:last-child { border-right: 0; }
+#panel[data-view="works"] .film-category-story .project-story-metrics span:first-child { color: #f3bc90; font-size: 10px; }
+#panel[data-view="works"] .project-story-copy { padding: 13px 21px 2px; }
+#panel[data-view="works"] .film-category-story .project-story-section {
+  position: relative;
+  padding: 0 0 9px 26px;
+  margin: 0 0 9px;
+  border-bottom: 1px solid #71858a3d;
+}
+#panel[data-view="works"] .film-category-story .project-story-section:last-child { margin-bottom: 6px; }
+#panel[data-view="works"] .film-category-story .project-story-section h4 {
+  margin: 0 0 3px;
+  color: #e7b18a;
+  font: 700 10px/1.35 var(--sans);
+  letter-spacing: .035em;
+}
+#panel[data-view="works"] .film-category-story .project-story-section h4 span {
+  position: absolute;
+  top: 0;
+  left: 0;
+  color: #839a9f;
+  font: 400 11px/1.2 var(--serif);
+}
+#panel[data-view="works"] .film-category-story .project-story-section p {
+  color: #d2ddda;
+  font: 400 12px/1.46 var(--sans);
+}
+#panel[data-view="works"] .film-category-story .project-story-link {
+  margin: 0 21px;
+  min-height: 40px;
+  padding: 0 12px;
+  background: #c69469;
+}
+#panel[data-view="works"] .film-category-story .project-story-tip {
+  margin: 6px 21px 13px;
+  color: #aabcbc;
+  font-size: 9px;
+}
+#panel[data-view="works"] .project-evidence-divider {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0 21px 9px;
+  padding-top: 9px;
+  border-top: 1px solid #7f999e60;
+  color: #d9ad83;
+  font: 700 9px/1.1 var(--sans);
+  letter-spacing: .16em;
+}
+#panel[data-view="works"] .project-evidence-divider span:last-child { font-size: 15px; line-height: .8; }
+#panel[data-view="works"] .project-evidence-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+  margin: 0 21px 20px;
+}
+#panel[data-view="works"] .project-evidence-item {
+  position: relative;
+  display: block;
+  width: 100%;
+  aspect-ratio: 1.6;
+  overflow: hidden;
+  padding: 0;
+  border: 1px solid #769096;
+  background: linear-gradient(130deg, #28404a, #0b1a22);
+  cursor: zoom-in;
+}
+#panel[data-view="works"] .project-evidence-item img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  transition: transform .23s ease, filter .23s ease;
+}
+#panel[data-view="works"] .project-evidence-item img:not([src]) { visibility: hidden; }
+#panel[data-view="works"] .project-evidence-item:hover img,
+#panel[data-view="works"] .project-evidence-item:focus-visible img { transform: scale(1.045); filter: brightness(1.12); }
+#panel[data-view="works"] .project-evidence-item > span {
+  position: absolute;
+  right: 7px;
+  bottom: 6px;
+  display: grid;
+  place-items: center;
+  width: 23px;
+  height: 23px;
+  border: 1px solid #e9c19c;
+  background: #0b171dcc;
+  color: #f5c698;
+  font: 700 13px/1 var(--sans);
+}
+#panel[data-view="works"] .project-evidence-item:focus-visible { outline: 2px solid #f1ba8d; outline-offset: 2px; }
+
+.project-evidence-dialog {
+  box-sizing: border-box;
+  width: min(1120px, 95vw);
+  max-width: 95vw;
+  max-height: 92vh;
+  margin: auto;
+  padding: 0;
+  border: 1px solid #859ca2;
+  color: #f2eee6;
+  background: #0a151b;
+  box-shadow: 0 30px 90px #000d;
+}
+.project-evidence-dialog::backdrop { background: #01070be8; backdrop-filter: blur(6px); }
+.project-evidence-viewer { padding: 12px; }
+.project-evidence-viewer-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+  padding: 0 1px 10px;
+  color: #ebb78e;
+  font: 700 10px/1.3 var(--sans);
+  letter-spacing: .13em;
+}
+.project-evidence-viewer-top b { margin-left: 12px; color: #f7efe7; font-weight: 600; }
+.project-evidence-viewer-top button,
+.project-evidence-viewer-body button {
+  border: 1px solid #738d93;
+  background: #14252c;
+  color: #f1ece5;
+  cursor: pointer;
+}
+.project-evidence-viewer-top button { min-height: 31px; padding: 0 12px; font: 700 11px/1 var(--sans); }
+.project-evidence-viewer-body { display: grid; grid-template-columns: 38px minmax(0, 1fr) 38px; gap: 10px; align-items: center; }
+.project-evidence-viewer-body button { width: 38px; height: 44px; font: 400 21px/1 var(--sans); }
+.project-evidence-viewer-body img { display: block; max-width: 100%; max-height: calc(92vh - 74px); margin: auto; object-fit: contain; }
+.project-evidence-viewer button:hover,
+.project-evidence-viewer button:focus-visible { border-color: #e5b88f; color: #f5c797; }
+.project-evidence-viewer button:focus-visible { outline: 2px solid #f5c797; outline-offset: 2px; }
+@media (max-width: 640px) {
+  .project-evidence-viewer-body { grid-template-columns: 28px minmax(0, 1fr) 28px; gap: 4px; }
+  .project-evidence-viewer-body button { width: 28px; height: 38px; }
+  .project-evidence-viewer { padding: 8px; }
+}

@@ -1,14 +1,14 @@
-/* Editorial treatment for the director statement inside the fixed-size archive dialog. */
+/* Director statement and contact card. The QR pixels are taken from the original image. */
 #panel[data-view="about"] #panel-about .about-layout {
-  grid-template-columns: minmax(0, 1fr) 306px;
-  gap: 68px;
+  grid-template-columns: minmax(0, 1fr) minmax(270px, 330px);
+  gap: clamp(26px, 4vw, 64px);
   align-items: center;
-  min-height: 660px;
+  min-height: 100%;
 }
 
 #panel-about .about-editorial {
   min-width: 0;
-  padding: 3px 0 4px;
+  padding: 6px 0;
 }
 
 #panel-about .about-kicker {
@@ -27,15 +27,14 @@
 }
 
 #panel[data-view="about"] #panel-about .about-layout h3 {
-  margin: 27px 0 29px;
-  font: 400 49px/1.28 var(--serif);
+  margin: 25px 0 26px;
+  font: 400 clamp(34px, 3.6vw, 49px)/1.27 var(--serif);
   letter-spacing: -.045em;
   color: #f1eee7;
 }
 
 #panel-about .about-layout h3 span {
   display: block;
-  white-space: nowrap;
 }
 
 #panel-about .about-layout h3 span:last-child {
@@ -44,64 +43,289 @@
 
 #panel-about .about-copy {
   max-width: 810px;
-  padding-top: 23px;
+  padding-top: 20px;
   border-top: 1px solid #8ca3a548;
 }
 
 #panel-about .about-copy p {
   max-width: none;
-  margin: 0 0 17px;
+  margin: 0 0 14px;
   color: #becac9;
-  font-size: 16px;
-  line-height: 1.86;
+  font-size: clamp(13px, 1.05vw, 16px);
+  line-height: 1.75;
   letter-spacing: .01em;
 }
 
 #panel-about .about-copy .about-thesis {
-  margin: 23px 0 0;
-  padding-left: 20px;
+  margin: 19px 0 0;
+  padding-left: 17px;
   border-left: 2px solid #df9b6d;
   color: #f0e8dd;
 }
 
-#panel[data-view="about"] #panel-about .about-proof {
-  align-self: center;
-  padding: 30px 26px 28px;
-  border: 1px solid #61777a70;
-  border-left: 2px solid #d99766;
-  background: linear-gradient(145deg, #26373dcb, #111c22d6 70%);
-  box-shadow: 0 16px 36px #02090d59;
+#panel[data-view="about"] #panel-about .about-editorial .about-proof {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 22px;
+  margin-top: 27px;
+  padding: 18px 0 0;
+  border: 0;
+  border-top: 1px solid #8ca3a548;
+  background: none;
+  box-shadow: none;
 }
 
-#panel-about .about-proof > span {
-  margin-bottom: 30px;
-  line-height: 1.45;
+#panel-about .about-proof-stat {
+  min-width: 0;
 }
 
 #panel-about .about-proof-stat + .about-proof-stat {
-  margin-top: 24px;
-  padding-top: 24px;
-  border-top: 1px solid #8ca3a548;
+  padding-left: 22px;
+  border-left: 1px solid #8ca3a548;
 }
 
-#panel[data-view="about"] #panel-about .about-proof strong {
+#panel[data-view="about"] #panel-about .about-proof-stat strong {
+  display: block;
   color: #f1eee7;
-  font-size: 52px;
+  font: 400 clamp(25px, 2.3vw, 34px)/1 var(--serif);
+  letter-spacing: -.05em;
 }
 
-#panel-about .about-proof-stat p {
-  margin: 8px 0 0;
-  color: #c1c9c6;
-  font-size: 12px;
+#panel-about .about-proof-stat span {
+  display: block;
+  margin-top: 7px;
+  color: #aebdba;
+  font-size: 11px;
+  line-height: 1.45;
+}
+
+#panel-about .about-contact {
+  position: relative;
+  min-width: 0;
+  padding: 23px 24px 21px;
+  border: 1px solid #63787c9c;
+  border-top: 2px solid #df9b6d;
+  background: linear-gradient(154deg, #263940e8, #111d23ed 63%, #0c171cee);
+  box-shadow: 0 17px 38px #02090d77;
+}
+
+#panel-about .about-contact::before {
+  content: "";
+  position: absolute;
+  inset: 6px;
+  border: 1px solid #74898c26;
+  pointer-events: none;
+}
+
+#panel-about .about-contact-head > span,
+#panel-about .about-contact-qr-top > span {
+  color: #eeaa79;
+  font: 700 9px/1.3 var(--sans);
+  letter-spacing: .16em;
+}
+
+#panel-about .about-contact-head h4 {
+  margin: 10px 0 4px;
+  color: #f4efe7;
+  font: 400 37px/1.1 var(--serif);
+  letter-spacing: -.04em;
+}
+
+#panel-about .about-contact-head p {
+  margin: 0;
+  color: #bdcac7;
+  font-size: 11px;
   line-height: 1.5;
 }
 
-#panel-about .about-proof small {
-  display: block;
-  margin-top: 29px;
-  padding-top: 15px;
-  border-top: 1px solid #8ca3a548;
-  color: #96a9a9;
+#panel-about .about-contact-head i {
+  padding: 0 6px;
+  color: #d49973;
+  font-style: normal;
+}
+
+#panel-about .about-contact-links {
+  margin-top: 17px;
+  border-top: 1px solid #82999a45;
+}
+
+#panel-about .about-contact-links a {
+  display: grid;
+  grid-template-columns: 35px minmax(0, 1fr) 15px;
+  align-items: center;
+  gap: 7px;
+  min-height: 43px;
+  border-bottom: 1px solid #82999a45;
+  color: #ede9e2;
+  text-decoration: none;
+}
+
+#panel-about .about-contact-links a:hover,
+#panel-about .about-contact-links a:focus-visible {
+  color: #ffbe90;
+}
+
+#panel-about .about-contact-links a > span {
+  color: #a7b9b8;
   font-size: 10px;
-  line-height: 1.75;
+}
+
+#panel-about .about-contact-links a > strong {
+  min-width: 0;
+  font: 600 clamp(11px, .95vw, 13px)/1.3 var(--sans);
+  overflow-wrap: anywhere;
+}
+
+#panel-about .about-contact-links a > b {
+  font-size: 15px;
+  font-weight: 400;
+  text-align: right;
+}
+
+#panel-about .about-contact-qr {
+  margin-top: 17px;
+}
+
+#panel-about .about-contact-qr-top {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: baseline;
+}
+
+#panel-about .about-contact-qr-top small {
+  color: #bfcdca;
+  font-size: 11px;
+}
+
+#panel-about .about-qr-frame {
+  position: relative;
+  display: block;
+  width: min(100%, 235px);
+  aspect-ratio: 1;
+  margin: 11px auto 0;
+  border: 7px solid #fff;
+  background: #fff;
+  overflow: hidden;
+  box-shadow: 0 9px 24px #0009;
+}
+
+#panel-about .about-qr-frame:hover,
+#panel-about .about-qr-frame:focus-visible {
+  outline: 2px solid #eeaa79;
+  outline-offset: 3px;
+}
+
+#panel-about .about-qr-frame img {
+  position: absolute;
+  top: -32.8%;
+  left: -10.5%;
+  display: block;
+  width: 120%;
+  max-width: none;
+  height: auto;
+}
+
+#panel-about .about-qr-note {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+  color: #b4c1bf;
+  font-size: 10px;
+  letter-spacing: .08em;
+}
+
+#panel-about .about-qr-note b {
+  color: #e4a16f;
+  font-size: 14px;
+  font-weight: 400;
+}
+
+@media (max-width: 820px) {
+  #panel[data-view="about"] #panel-about .about-layout {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 28px;
+    align-items: stretch;
+  }
+  #panel[data-view="about"] #panel-about .about-layout h3 {
+    font-size: clamp(32px, 6vw, 43px);
+  }
+  #panel-about .about-contact {
+    width: min(100%, 460px);
+  }
+}
+
+@media (max-width: 500px) {
+  #panel[data-view="about"] #panel-about .about-layout h3 {
+    margin: 19px 0 23px;
+    font-size: clamp(29px, 8vw, 38px);
+  }
+  #panel-about .about-copy p {
+    font-size: 13px;
+    line-height: 1.7;
+  }
+  #panel-about .about-contact {
+    padding: 20px;
+  }
+  #panel-about .about-qr-frame {
+    width: min(100%, 244px);
+  }
+}
+
+/* The contact page needs readable controls and a scannable QR on a phone. */
+@media (max-width: 700px) {
+  #panel[data-view="about"] {
+    width: min(96vw, 520px);
+    height: 92dvh;
+    transform: translate(-50%, -50%);
+  }
+  #panel[data-view="about"] .dialog-top {
+    min-height: 66px;
+    padding: 12px 18px;
+  }
+  #panel[data-view="about"] .dialog-top h2 { font-size: 27px; }
+  #panel[data-view="about"] .dialog-close { padding: 9px 10px; font-size: 10px; }
+  #panel[data-view="about"] .panel-body { padding: 20px; }
+  #panel-about .about-contact { width: 100%; }
+}
+
+@media (max-height: 700px) and (min-width: 821px) {
+  #panel[data-view="about"] #panel-about .about-layout h3 {
+    margin: 17px 0 18px;
+    font-size: clamp(32px, 3.3vw, 43px);
+  }
+  #panel-about .about-copy {
+    padding-top: 15px;
+  }
+  #panel-about .about-copy p {
+    margin-bottom: 10px;
+    font-size: 13px;
+    line-height: 1.58;
+  }
+  #panel-about .about-copy .about-thesis {
+    margin-top: 12px;
+  }
+  #panel[data-view="about"] #panel-about .about-editorial .about-proof {
+    margin-top: 18px;
+    padding-top: 14px;
+  }
+  #panel-about .about-contact {
+    padding: 17px 20px 14px;
+  }
+  #panel-about .about-contact-head h4 {
+    font-size: 31px;
+  }
+  #panel-about .about-contact-links {
+    margin-top: 10px;
+  }
+  #panel-about .about-contact-links a {
+    min-height: 36px;
+  }
+  #panel-about .about-contact-qr {
+    margin-top: 11px;
+  }
+  #panel-about .about-qr-frame {
+    width: min(100%, 205px);
+    margin-top: 7px;
+  }
 }
