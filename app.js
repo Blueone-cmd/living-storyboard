@@ -145,29 +145,31 @@
 
   function renderHero() {
     const hero = $("#hero-composite-video");
-    hero.muted = true;
-    hero.defaultMuted = true;
-    hero.loop = true;
-    hero.playsInline = true;
-    // Begin just before the synchronized dragon, leviathan and wave impact.
-    // The 30-second loop still passes through every frame of all three clips.
-    const revealAt = 10.5;
-    const seekToReveal = () => { if (hero.duration > revealAt) hero.currentTime = revealAt; };
-    if (hero.readyState >= 1) seekToReveal();
-    else hero.addEventListener("loadedmetadata", seekToReveal, { once: true });
-    const screen = $("#screen");
-    const updateImpactBeat = () => {
-      const t = hero.currentTime;
-      screen.classList.toggle("impact-beat", (t >= 10.95 && t < 11.70) || (t >= 26.02 && t < 26.75));
-    };
-    hero.addEventListener("seeked", updateImpactBeat);
-    if (typeof hero.requestVideoFrameCallback === "function") {
-      const onHeroFrame = () => { updateImpactBeat(); hero.requestVideoFrameCallback(onHeroFrame); };
-      hero.requestVideoFrameCallback(onHeroFrame);
-    } else hero.addEventListener("timeupdate", updateImpactBeat);
-    hero.addEventListener("playing", () => hero.parentElement.classList.add("is-playing"));
-    hero.addEventListener("error", () => hero.parentElement.classList.remove("is-playing"));
-    hero.play().catch(() => {});
+    if (!window.PORTFOLIO_LIGHT_MEDIA_MODE) {
+      hero.muted = true;
+      hero.defaultMuted = true;
+      hero.loop = true;
+      hero.playsInline = true;
+      // Begin just before the synchronized dragon, leviathan and wave impact.
+      // The 30-second loop still passes through every frame of all three clips.
+      const revealAt = 10.5;
+      const seekToReveal = () => { if (hero.duration > revealAt) hero.currentTime = revealAt; };
+      if (hero.readyState >= 1) seekToReveal();
+      else hero.addEventListener("loadedmetadata", seekToReveal, { once: true });
+      const screen = $("#screen");
+      const updateImpactBeat = () => {
+        const t = hero.currentTime;
+        screen.classList.toggle("impact-beat", (t >= 10.95 && t < 11.70) || (t >= 26.02 && t < 26.75));
+      };
+      hero.addEventListener("seeked", updateImpactBeat);
+      if (typeof hero.requestVideoFrameCallback === "function") {
+        const onHeroFrame = () => { updateImpactBeat(); hero.requestVideoFrameCallback(onHeroFrame); };
+        hero.requestVideoFrameCallback(onHeroFrame);
+      } else hero.addEventListener("timeupdate", updateImpactBeat);
+      hero.addEventListener("playing", () => hero.parentElement.classList.add("is-playing"));
+      hero.addEventListener("error", () => hero.parentElement.classList.remove("is-playing"));
+      hero.play().catch(() => {});
+    }
     const shots = data.works.filter((work) => work.type === "shot");
     filmReel = window.initFilmReel($("#reel-track"), shots, (work, opener) => {
       openPanel("works", opener, "shot");
@@ -179,6 +181,7 @@
   function syncBackgroundVideo() {
     const hero = $("#hero-composite-video");
     if (!hero) return;
+    if (window.PORTFOLIO_LIGHT_MEDIA_MODE) return;
     if (document.hidden || document.querySelector("dialog[open]")) {
       if (!hero.paused) hero.pause();
     } else if (hero.paused) hero.play().catch(() => {});
@@ -229,7 +232,7 @@
     renderFilmCategories();
     if (currentFilter === "film" && !selectedFilmCategory) { $("#works-grid").innerHTML = ""; return; }
     if (currentFilter === "shot") {
-      $("#works-grid").innerHTML = `<div class="shot-carousel"><div class="shot-carousel-heading"><div><span>精彩镜头 / ${pad2(galleryList.length)}</span><small>左右拖动或使用滚轮浏览，点击画面即可播放</small></div><div class="shot-carousel-controls"><button type="button" data-shot-scroll="-1" aria-label="向左浏览精彩镜头">←</button><button type="button" data-shot-scroll="1" aria-label="向右浏览精彩镜头">→</button></div></div><div class="shot-carousel-track" role="region" aria-label="精彩镜头横向列表" tabindex="0">${galleryList.map((work, index) => `<article class="work-card work-card--shot shot-carousel-card ${work.poster ? "" : "placeholder"}" data-shot-id="${escapeHTML(work.id)}"><button type="button" data-open="${escapeHTML(work.id)}" aria-label="播放第 ${index + 1} 个精彩镜头"><div class="work-thumb">${work.poster ? `<img src="${escapeHTML(work.poster)}" alt="${escapeHTML(work.title)} 作品画面" loading="eager" decoding="async" draggable="false">` : ""}<div class="film-top"><span>SHOT / ${pad2(index + 1)}</span><span>${escapeHTML(work.aspect || "")}</span></div><span class="work-index">${pad2(index + 1)}</span><span class="work-arrow">▶</span></div></button></article>`).join("")}</div><div class="shot-carousel-progress"><span class="shot-carousel-percent">00%</span><input class="shot-carousel-range" type="range" min="0" max="1000" value="0" aria-label="精彩镜头浏览进度"><span class="shot-carousel-hint">DRAG / SCROLL</span></div></div>`;
+      $("#works-grid").innerHTML = `<div class="shot-carousel"><div class="shot-carousel-heading"><div><span>精彩镜头 / ${pad2(galleryList.length)}</span><small>左右拖动或使用滚轮浏览，点击画面即可播放</small></div><div class="shot-carousel-controls"><button type="button" data-shot-scroll="-1" aria-label="向左浏览精彩镜头">←</button><button type="button" data-shot-scroll="1" aria-label="向右浏览精彩镜头">→</button></div></div><div class="shot-carousel-track" role="region" aria-label="精彩镜头横向列表" tabindex="0">${galleryList.map((work, index) => `<article class="work-card work-card--shot shot-carousel-card ${work.poster ? "" : "placeholder"}" data-shot-id="${escapeHTML(work.id)}"><button type="button" data-open="${escapeHTML(work.id)}" aria-label="播放第 ${index + 1} 个精彩镜头"><div class="work-thumb">${work.poster ? `<img src="${escapeHTML(work.poster)}" alt="${escapeHTML(work.title)} 作品画面" loading="${index < 2 ? "eager" : "lazy"}" fetchpriority="${index < 2 ? "high" : "low"}" decoding="async" draggable="false">` : ""}<div class="film-top"><span>SHOT / ${pad2(index + 1)}</span><span>${escapeHTML(work.aspect || "")}</span></div><span class="work-index">${pad2(index + 1)}</span><span class="work-arrow">▶</span></div></button></article>`).join("")}</div><div class="shot-carousel-progress"><span class="shot-carousel-percent">00%</span><input class="shot-carousel-range" type="range" min="0" max="1000" value="0" aria-label="精彩镜头浏览进度"><span class="shot-carousel-hint">DRAG / SCROLL</span></div></div>`;
       const track = $(".shot-carousel-track", $("#works-grid"));
       let pendingWheel = 0;
       let wheelFrame = 0;

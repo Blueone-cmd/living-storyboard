@@ -6,6 +6,7 @@
   <meta name="color-scheme" content="dark">
   <meta name="description" content="AIGC 导演个人作品集：在一座可探索的电影场景里观看竖屏成片、镜头、角色与提示词。">
   <title>LIVING STORYBOARD · AIGC 导演作品集</title>
+  <link rel="preload" as="image" href="assets/hero-composite-synced-poster.webp" fetchpriority="high">
   <link rel="stylesheet" href="styles.css">
   <link rel="stylesheet" href="scene-v2.css">
   <link rel="stylesheet" href="character-panel.css">
@@ -56,7 +57,7 @@
     </header>
 
     <div class="hero-composite" aria-label="三段作品影像合成的连续动态场景">
-      <video id="hero-composite-video" data-video-src="media/hero-composite-synced.mp4" poster="assets/hero-composite-synced-poster.webp" autoplay muted loop playsinline preload="auto" aria-hidden="true"></video>
+      <video id="hero-composite-video" data-video-src="media/hero-composite-synced.mp4" poster="assets/hero-composite-synced-poster.webp" muted loop playsinline preload="none" aria-hidden="true"></video>
       <span class="hero-atmosphere" aria-hidden="true"></span>
     </div>
 

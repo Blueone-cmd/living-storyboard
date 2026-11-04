@@ -24,6 +24,7 @@
   ];
   // The film cells are cropped thumbnail windows; the dialog preserves 9:16.
   const FRAME_POSITIONS = ['50% 38%', '50% 45%', '50% 54%', '46% 44%', '54% 49%'];
+  const lightMediaMode = !!window.PORTFOLIO_LIGHT_MEDIA_MODE;
   const clamp = (value, minimum, maximum) => Math.min(maximum, Math.max(minimum, value));
   const mod = (value, period) => ((value % period) + period) % period;
 
@@ -264,7 +265,7 @@
       });
       visual.append(frame);
 
-      if (work.reelClip) {
+      if (work.reelClip && !lightMediaMode) {
         const video = document.createElement('video');
         video.className = 'reel-live-video';
         video.src = work.reelClip;

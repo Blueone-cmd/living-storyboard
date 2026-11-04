@@ -6,6 +6,12 @@
   // 留空则保留本地相对路径，方便用含视频的本地目录预览。
   const R2_PUBLIC_BASE_URL = 'https://pub-0774e10c01994b08aefd51661ebaa368.r2.dev';
   const base = R2_PUBLIC_BASE_URL.trim().replace(/\/+$/, '');
+  const connection = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+  const lightMediaMode = window.matchMedia('(max-width: 700px)').matches ||
+    window.matchMedia('(pointer: coarse)').matches ||
+    window.matchMedia('(prefers-reduced-motion: reduce)').matches ||
+    !!connection?.saveData || /^(?:slow-2g|2g)$/.test(connection?.effectiveType || '');
+  window.PORTFOLIO_LIGHT_MEDIA_MODE = lightMediaMode;
 
   const videoURL = (path) => {
     if (!path || /^(?:[a-z][a-z\d+.-]*:)?\/\//i.test(path)) return path;
@@ -22,5 +28,8 @@
   }
 
   const hero = document.getElementById('hero-composite-video');
-  if (hero?.dataset.videoSrc) hero.src = videoURL(hero.dataset.videoSrc);
+  if (hero) {
+    hero.preload = lightMediaMode ? 'none' : 'auto';
+    if (!lightMediaMode && hero.dataset.videoSrc) hero.src = videoURL(hero.dataset.videoSrc);
+  }
 })();
